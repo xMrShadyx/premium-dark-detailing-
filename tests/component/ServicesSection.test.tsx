@@ -49,7 +49,7 @@ describe("ServicesSection", () => {
         <ContactSection />
       </>,
     );
-    await user.click(screen.getByRole("link", { name: /Запитване за услугата: Възстановяване на фарове/ }));
+    await user.click(screen.getByRole("link", { name: /Запитване за услугата\s*:\s*Възстановяване на фарове/ }));
     expect(screen.getByRole("combobox", { name: "Услуга" })).toHaveValue("headlight-restoration");
   });
 });
