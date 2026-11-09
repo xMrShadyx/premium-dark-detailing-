@@ -5,7 +5,7 @@ import { formatDuration, formatPrice } from "@/lib/format";
 const bgT = createI18n("bg").getFixedT("bg");
 const enT = createI18n("en").getFixedT("en");
 // Intl may use non-breaking spaces; normalise for readable assertions.
-const norm = (s: string | null) => s?.replace(/[  ]/g, " ");
+const norm = (s: string | null) => s?.replace(/[\u00a0\u202f]/g, " ");
 
 describe("formatPrice", () => {
   it("shows a localized 'price on request' label for null", () => {
