@@ -1,12 +1,13 @@
 import type { Language } from "@/config/schema";
+import { getSupabase, isSupabaseConfigured } from "@/lib/supabase";
 import type { InquiryValues } from "./inquiry.schema";
 
 /**
- * Sends an inquiry to the secure endpoint (serverless function or managed form
- * service) configured in VITE_INQUIRY_ENDPOINT. The endpoint holds the email
- * API key, validates again, applies spam checks and rate limiting (SRS §2.2, §6.3).
+ * Sends an inquiry. Preferred: Supabase (row in `inquiries`; RLS allows anon
+ * insert only, the database re-validates, rate-limits and rejects the honeypot).
+ * Alternative: a custom endpoint in VITE_INQUIRY_ENDPOINT.
  *
- * With no endpoint configured the form runs in a clearly labelled demo mode:
+ * With neither configured the form runs in a clearly labelled demo mode:
  * nothing is sent and the UI never claims otherwise.
  */
 export type SubmitResult =
@@ -19,7 +20,7 @@ export function getInquiryEndpoint(): string {
 }
 
 export function isDemoMode(): boolean {
-  return getInquiryEndpoint() === "";
+  return !isSupabaseConfigured && getInquiryEndpoint() === "";
 }
 
 export async function submitInquiry(
@@ -27,6 +28,29 @@ export async function submitInquiry(
   lang: Language,
   fetchImpl: typeof fetch = fetch,
 ): Promise<SubmitResult> {
+  const supabase = getSupabase();
+  if (supabase) {
+    try {
+      const client = await supabase;
+      const { error } = await client.from("inquiries").insert({
+        name: data.name.trim(),
+        phone: data.phone.trim(),
+        email: data.email.trim() || null,
+        service_id: data.serviceId,
+        vehicle: data.vehicle.trim() || null,
+        preferred_date: data.preferredDate || null,
+        message: data.message.trim(),
+        lang,
+        consent: data.consent,
+        website: data.website,
+      });
+      if (!error) return { status: "accepted" };
+      return { status: "error", reason: /fetch|network/i.test(error.message) ? "network" : "server" };
+    } catch {
+      return { status: "error", reason: "network" };
+    }
+  }
+
   const endpoint = getInquiryEndpoint();
   if (!endpoint) return { status: "demo" };
 

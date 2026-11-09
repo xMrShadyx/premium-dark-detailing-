@@ -3,7 +3,7 @@
 Bilingual (BG/EN), configuration-driven single-page website for a car detailing business:
 interior deep cleaning and headlight restoration.
 
-**Status:** Header, Hero, Services, Pricing, Gallery (empty state / simple pairs), Contact with
+**Status:** Admin panel (inquiries, schedule, gallery uploads) on Supabase. Header, Hero, Services, Pricing, Gallery (empty state / simple pairs), Contact with
 the inquiry form (Zod validation, copy-to-clipboard, Viber flow, demo mode) and Footer are
 implemented. Still to do: About (Sprint 2), the draggable before/after slider and full-screen
 viewer (Sprint 3), the serverless email endpoint (Sprint 4), full prerendering (Phase 5).
@@ -122,6 +122,48 @@ tests/
 - The endpoint must validate again, rate-limit, and hold the email API key server-side.
 - Viber: shown only when `contact.viber` is configured. The inquiry is copied first, then the
   chat opens; the UI never claims a Viber message was sent.
+
+## Admin panel (`/admin/`)
+
+A private panel for the owner, served at `<site>/admin/` (not linked from the site, `noindex`).
+It is a separate lazy-loaded chunk, so public visitors never download it.
+
+- **Заявки** — every inquiry from the website form. Filter by status (Нова / Насрочена /
+  Завършена / Отказана), call or open Viber, set date, time and duration, mark done or rejected,
+  keep a private note, delete.
+- **График** — upcoming appointments grouped by day; overlapping jobs are flagged.
+- **Галерия** — upload a before/after pair (photos are resized to 1600 px WebP and stripped of
+  location metadata in the browser), publish/hide, reorder, delete. Once at least one uploaded
+  pair is published, the public gallery shows uploaded pairs instead of the demo pairs.
+
+The customer is notified manually (phone / Viber); no automatic emails.
+
+### One-time setup (Supabase, free plan)
+
+1. Create a project at supabase.com (region: Frankfurt / EU).
+2. **SQL Editor** → paste and run `supabase/migrations/20261109000000_admin_panel.sql`.
+3. **Authentication → Sign In / Providers** → turn **off** "Allow new users to sign up".
+4. **Authentication → Users → Add user** → your email and a strong password.
+5. **SQL Editor** → make that user the admin:
+   ```sql
+   insert into public.admins (user_id)
+     select id from auth.users where email = 'YOUR-EMAIL@example.com';
+   ```
+6. **Project Settings → API** → copy *Project URL* and the *anon public* key.
+7. GitHub repo → **Settings → Secrets and variables → Actions → Variables** → add
+   `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then re-run the deploy workflow.
+   (Locally: put them in `.env.local`.)
+
+The anon key is public by design: Row Level Security only lets visitors insert inquiries and read
+published gallery items; everything else requires the admin login. **Never** use the
+`service_role` key in the frontend.
+
+### Data and privacy
+
+Inquiries contain personal data (name, phone, optional email). Delete finished or rejected
+inquiries you no longer need (e.g. after 12 months) from the panel, and mention the retention
+period in the privacy notice. The database also rate-limits submissions (3 per phone per hour,
+60 per hour in total) and rejects the form's honeypot field.
 
 ## Deployment
 

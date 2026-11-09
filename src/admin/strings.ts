@@ -1,0 +1,92 @@
+import type { InquiryStatus } from "./api";
+
+/**
+ * Admin panel copy (Bulgarian only — the panel is internal, used by the owner).
+ * Kept in one place rather than inside components.
+ */
+export const S = {
+  appTitle: "Админ панел",
+  viewSite: "Към сайта",
+  signOut: "Изход",
+  loading: "Зареждане…",
+  retry: "Опитай отново",
+  saving: "Запазване…",
+  save: "Запази",
+  cancel: "Отказ",
+
+  notConfiguredTitle: "Базата данни не е свързана",
+  notConfiguredText:
+    "Админ панелът работи със Supabase. Задайте VITE_SUPABASE_URL и VITE_SUPABASE_ANON_KEY (виж README → Админ панел) и публикувайте сайта отново.",
+
+  loginTitle: "Вход",
+  email: "Имейл",
+  password: "Парола",
+  signIn: "Вход",
+  signingIn: "Влизане…",
+  loginFailed: "Грешен имейл или парола.",
+  noAccessTitle: "Нямате достъп",
+  noAccessText: "Този акаунт не е администратор. Добавете го в таблицата admins (виж README).",
+
+  tabs: { inquiries: "Заявки", schedule: "График", gallery: "Галерия" },
+
+  status: {
+    new: "Нова",
+    scheduled: "Насрочена",
+    done: "Завършена",
+    rejected: "Отказана",
+  } satisfies Record<InquiryStatus, string>,
+  filterAll: "Всички",
+  noInquiries: "Няма заявки в тази категория.",
+  refresh: "Обнови",
+  received: "Получена",
+  preferredDate: "Предпочитана дата",
+  vehicle: "Автомобил",
+  call: "Обади се",
+  viber: "Viber",
+  schedule: "Насрочи",
+  reschedule: "Промени часа",
+  date: "Дата",
+  time: "Час",
+  duration: "Продължителност (мин)",
+  markDone: "Завършена",
+  reject: "Откажи",
+  reopen: "Върни като нова",
+  note: "Бележка (вижда се само тук)",
+  saveNote: "Запази бележката",
+  deleteInquiry: "Изтрий заявката",
+  confirmDelete: "Потвърди изтриването",
+  scheduledFor: "Насрочена за",
+  newBadge: (n: number) => `${n} ${n === 1 ? "нова" : "нови"}`,
+
+  scheduleTitle: "Предстоящи часове",
+  scheduleEmpty: "Няма насрочени часове.",
+  showPast: "Покажи минали",
+  hidePast: "Скрий минали",
+  overlap: "Застъпва се с друг час",
+  today: "Днес",
+  tomorrow: "Утре",
+
+  galleryTitle: "Снимки преди и след",
+  uploadTitle: "Нова двойка снимки",
+  service: "Услуга",
+  titleBg: "Заглавие (български)",
+  titleEn: "Заглавие (английски)",
+  before: "Снимка преди",
+  after: "Снимка след",
+  publishNow: "Публикувай веднага",
+  upload: "Качи",
+  uploading: "Качване…",
+  uploaded: "Снимките са качени.",
+  galleryEmpty: "Още няма качени снимки. Докато няма, сайтът показва примерните (демо) двойки.",
+  published: "Публикувана",
+  hidden: "Скрита",
+  publish: "Публикувай",
+  unpublish: "Скрий",
+  moveUp: "Нагоре",
+  moveDown: "Надолу",
+  deleteItem: "Изтрий",
+  photoHint: "JPG, PNG или WebP. Снимката се смалява и местоположението се премахва автоматично.",
+  fillAll: "Попълнете заглавията и изберете двете снимки.",
+
+  errorGeneric: "Нещо се обърка. Опитайте отново.",
+};

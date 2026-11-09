@@ -5,7 +5,8 @@ import { BeforeAfterSlider } from "@/components/gallery/BeforeAfterSlider";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getEnabledServices, getPublishedGallery } from "@/config";
+import { getEnabledServices } from "@/config";
+import { useGalleryItems } from "@/features/gallery/useGalleryItems";
 import type { GalleryItem } from "@/config/schema";
 import { assetUrl, localize } from "@/lib/locale";
 import { cn } from "@/lib/cn";
@@ -14,8 +15,11 @@ import { cn } from "@/lib/cn";
  * Before/after gallery: comparison sliders, or a designed empty state.
  * Items flagged `demo` carry a visible "simulation" label (SRS §5.4).
  */
-export function GallerySection({ items = getPublishedGallery() }: { items?: GalleryItem[] }) {
+export function GallerySection({ items: itemsProp }: { items?: GalleryItem[] }) {
   const { t } = useTranslation();
+  const remote = useGalleryItems();
+  const items = itemsProp ?? remote.items;
+  const loading = !itemsProp && remote.loading;
   const { lang } = useLocale();
   const [filter, setFilter] = useState<string>("all");
 
@@ -41,7 +45,12 @@ export function GallerySection({ items = getPublishedGallery() }: { items?: Gall
           subtitle={items.length > 0 ? t("gallery.subtitle") : undefined}
         />
 
-        {items.length === 0 ? (
+        {loading ? (
+          <div aria-hidden="true" className="mt-12 grid max-w-5xl gap-8 sm:grid-cols-2">
+            <div className="aspect-[3/4] animate-pulse rounded-2xl bg-surface motion-reduce:animate-none" />
+            <div className="hidden aspect-[3/4] animate-pulse rounded-2xl bg-surface motion-reduce:animate-none sm:block" />
+          </div>
+        ) : items.length === 0 ? (
           <div className="mt-12 grid overflow-hidden rounded-2xl border border-line sm:grid-cols-[1fr_auto_1fr]">
             <div aria-hidden="true" className="relative hidden h-44 bg-[repeating-linear-gradient(135deg,var(--color-surface)_0_10px,var(--color-bg-2)_10px_20px)] sm:block">
               <span className="absolute top-4 left-4 text-xs font-semibold tracking-[0.2em] text-fg-muted uppercase">

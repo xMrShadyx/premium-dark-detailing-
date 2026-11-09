@@ -31,4 +31,11 @@ for (const [dir, content] of [
 }
 writeFileSync(resolve(dist, "404.html"), html);
 
-console.log("postbuild: wrote bg/index.html, en/index.html, 404.html");
+// Admin panel entry (same bundle, lazy chunk). Not for search engines.
+mkdirSync(resolve(dist, "admin"), { recursive: true });
+writeFileSync(
+  resolve(dist, "admin", "index.html"),
+  html.replace("<head>", '<head>\n    <meta name="robots" content="noindex, nofollow" />'),
+);
+
+console.log("postbuild: wrote bg/, en/, admin/ index.html and 404.html");
