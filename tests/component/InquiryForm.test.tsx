@@ -56,4 +56,28 @@ describe("InquiryForm", () => {
     renderWithProviders(<InquiryForm />);
     expect(screen.queryByRole("button", { name: "Отвори Viber" })).not.toBeInTheDocument();
   });
+
+  it("tells the booking window to close once the inquiry is accepted", async () => {
+    const service = await import("@/features/inquiries/inquiry.service");
+    const spy = vi.spyOn(service, "submitInquiry").mockResolvedValue({ status: "accepted" });
+    const onSent = vi.fn();
+    const user = userEvent.setup();
+    renderWithProviders(<InquiryForm onSent={onSent} />);
+    await fillValid(user);
+    await user.click(screen.getByRole("button", { name: "Изпрати запитване" }));
+    expect(onSent).toHaveBeenCalledTimes(1);
+    spy.mockRestore();
+  });
+
+  it("keeps the window open when sending fails", async () => {
+    const service = await import("@/features/inquiries/inquiry.service");
+    const spy = vi.spyOn(service, "submitInquiry").mockResolvedValue({ status: "error", reason: "server" });
+    const onSent = vi.fn();
+    const user = userEvent.setup();
+    renderWithProviders(<InquiryForm onSent={onSent} />);
+    await fillValid(user);
+    await user.click(screen.getByRole("button", { name: "Изпрати запитване" }));
+    expect(onSent).not.toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });

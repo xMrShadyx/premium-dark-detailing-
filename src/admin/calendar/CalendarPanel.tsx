@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { CalendarPlus, ChevronLeft, ChevronRight, GripVertical, Inbox, Lock, LockOpen, X } from "lucide-react";
+import { CalendarPlus, ChevronLeft, ChevronRight, Inbox, Lock, LockOpen, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { getEnabledServices } from "@/config";
 import { cn } from "@/lib/cn";
@@ -14,6 +14,7 @@ import {
 } from "../api";
 import { serviceTitle } from "../ui";
 import { BookingDialog, type BookingValues, type DialogState } from "./BookingDialog";
+import { RequestCard } from "./RequestCard";
 import {
   barsForMonth,
   buildMonths,
@@ -284,7 +285,7 @@ export function CalendarPanel({
         <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
           <Inbox aria-hidden="true" size={18} className="text-accent" />
           Неразпределени
-          <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-bg tabular-nums">{unassigned.length}</span>
+          <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-white tabular-nums">{unassigned.length}</span>
         </h2>
         <p className="mt-1 text-sm text-fg-muted">
           Заявки от сайта, които още нямат час. Плъзнете карта върху ден или натиснете „Разпредели“ и изберете ден.
@@ -294,45 +295,19 @@ export function CalendarPanel({
         ) : (
           <ul className="mt-3 flex gap-3 overflow-x-auto pb-2">
             {unassigned.map((row) => (
-              <li
+              <RequestCard
                 key={row.id}
-                draggable
+                row={row}
+                color={serviceColor(row.service_id)}
+                selected={assigning?.id === row.id}
+                onAssign={() => setAssigning(assigning?.id === row.id ? null : row)}
+                onPreferredDate={() => setDialog({ mode: "assign", date: row.preferred_date!, row })}
                 onDragStart={(e) => {
                   e.dataTransfer.setData("text/inquiry-id", row.id);
                   e.dataTransfer.effectAllowed = "move";
                   setAssigning(null);
                 }}
-                className={cn(
-                  "flex w-64 shrink-0 cursor-grab flex-col gap-1 rounded-xl border bg-bg p-3 text-sm active:cursor-grabbing",
-                  assigning?.id === row.id ? "border-accent" : "border-line",
-                )}
-              >
-                <p className="flex items-center gap-1.5 font-semibold">
-                  <GripVertical aria-hidden="true" size={15} className="shrink-0 text-fg-muted" />
-                  <span className="truncate">{row.name}</span>
-                </p>
-                <p className="flex items-center gap-2 text-fg-muted">
-                  <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: serviceColor(row.service_id) }} aria-hidden="true" />
-                  {serviceTitle(row.service_id)}
-                </p>
-                <p className="text-fg-muted tabular-nums">{row.phone}</p>
-                {row.preferred_date && (
-                  <p className="text-xs text-accent">
-                    Предпочита {new Date(`${row.preferred_date}T00:00:00`).toLocaleDateString("bg-BG", { day: "numeric", month: "long" })}
-                  </p>
-                )}
-                {row.message && <p className="line-clamp-2 text-xs text-fg-muted">{row.message}</p>}
-                <div className="mt-1 flex gap-2">
-                  <Button size="sm" className="min-h-9 px-3" onClick={() => setAssigning(assigning?.id === row.id ? null : row)}>
-                    {assigning?.id === row.id ? "Избира се…" : "Разпредели"}
-                  </Button>
-                  {row.preferred_date && (
-                    <Button size="sm" variant="secondary" className="min-h-9 px-3" onClick={() => setDialog({ mode: "assign", date: row.preferred_date!, row })}>
-                      На желаната дата
-                    </Button>
-                  )}
-                </div>
-              </li>
+              />
             ))}
           </ul>
         )}

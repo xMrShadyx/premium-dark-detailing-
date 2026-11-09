@@ -33,7 +33,8 @@ function todayIso(): string {
   return d.toISOString().slice(0, 10);
 }
 
-export function InquiryForm() {
+/** `onSent` runs after the server accepted the inquiry (the booking window uses it to close). */
+export function InquiryForm({ onSent }: { onSent?: () => void } = {}) {
   const { t } = useTranslation();
   const { lang } = useLocale();
   const { serviceId: intendedService } = useInquiryIntent();
@@ -109,6 +110,7 @@ export function InquiryForm() {
     if (result.status === "accepted") {
       setFeedback({ kind: "success", text: t("status.accepted") });
       setValues(emptyInquiry);
+      onSent?.();
     } else if (result.status === "demo") {
       setFeedback({ kind: "info", text: t("status.demo") });
     } else {

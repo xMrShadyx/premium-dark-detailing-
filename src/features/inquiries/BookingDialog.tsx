@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CalendarDays, X } from "lucide-react";
+import { CalendarDays, CheckCircle2, X } from "lucide-react";
 import { InquiryForm } from "./InquiryForm";
 import { useInquiryIntent } from "./InquiryIntentContext";
 
@@ -9,6 +9,14 @@ export function BookingDialog() {
   const { t } = useTranslation();
   const { bookingOpen, closeBooking } = useInquiryIntent();
   const ref = useRef<HTMLDialogElement>(null);
+  const [sent, setSent] = useState(false);
+
+  // The confirmation stays on the page for a few seconds after the window closes.
+  useEffect(() => {
+    if (!sent) return;
+    const timer = window.setTimeout(() => setSent(false), 7000);
+    return () => window.clearTimeout(timer);
+  }, [sent]);
 
   useEffect(() => {
     const dialog = ref.current;
@@ -18,6 +26,7 @@ export function BookingDialog() {
   }, [bookingOpen]);
 
   return (
+    <>
     <dialog
       ref={ref}
       aria-labelledby="booking-title"
@@ -48,10 +57,30 @@ export function BookingDialog() {
             </button>
           </header>
           <div className="overflow-y-auto px-5 py-6 sm:px-8">
-            <InquiryForm />
+            <InquiryForm
+              onSent={() => {
+                closeBooking();
+                setSent(true);
+              }}
+            />
           </div>
         </div>
       )}
     </dialog>
+    <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4">
+      {sent && (
+        <p
+          role="status"
+          className="pointer-events-auto flex max-w-md items-start gap-3 rounded-xl border border-accent/40 bg-bg-2 px-5 py-4 text-sm text-fg shadow-[0_0_40px_-8px] shadow-accent/60 animate-rise"
+        >
+          <CheckCircle2 aria-hidden="true" size={20} className="mt-0.5 shrink-0 text-success" />
+          <span>{t("status.accepted")}</span>
+          <button type="button" onClick={() => setSent(false)} aria-label={t("booking.close")} className="-mt-1 -mr-2 ml-auto rounded-full p-1 text-fg-muted hover:text-fg">
+            <X aria-hidden="true" size={16} />
+          </button>
+        </p>
+      )}
+    </div>
+    </>
   );
 }

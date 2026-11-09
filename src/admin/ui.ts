@@ -35,3 +35,18 @@ export function toLocalInputs(d: Date): { date: string; time: string } {
 export function dayKey(d: Date): string {
   return toLocalInputs(d).date;
 }
+
+const relative = new Intl.RelativeTimeFormat("bg-BG", { numeric: "auto" });
+
+/** "преди 5 минути", "преди 2 часа", "вчера", "преди 3 дни"; older than a week → the date. */
+export function timeAgo(iso: string, now = new Date()): string {
+  const then = new Date(iso);
+  const minutes = Math.round((now.getTime() - then.getTime()) / 60_000);
+  if (minutes < 1) return "току-що";
+  if (minutes < 60) return relative.format(-minutes, "minute");
+  const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  const days = Math.round((startOfDay(now) - startOfDay(then)) / 86_400_000);
+  if (days === 0) return relative.format(-Math.round(minutes / 60), "hour");
+  if (days < 7) return relative.format(-days, "day");
+  return dateOnly.format(then);
+}

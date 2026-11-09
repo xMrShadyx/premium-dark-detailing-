@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Варианти на заявка</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05080e; --bg2: #08101a; --surface: #0c1622; --hover: #12202f; --line: #1b2a3c;
+    --accent: #2b8cff; --fg: #f4f7fb; --muted: #a3b0c2; --ok: #4cc38a; --viber: #7360f2;
+    --head: #2f6fd6; --interior: #1f8a99;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.5 Inter, system-ui, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 28px 16px 60px; }
+  h1 { font: 800 24px Manrope, sans-serif; margin: 0 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 28px; }
+  .variant { margin-bottom: 36px; }
+  .vhead { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .tag { font: 800 12px Manrope; background: var(--accent); color: #fff; border-radius: 6px; padding: 2px 9px; }
+  .vhead h2 { font: 700 18px Manrope; margin: 0; }
+  .vhead p { margin: 0; color: var(--muted); font-size: 13px; }
+  .panel { border: 1px solid var(--line); background: var(--surface); border-radius: 16px; padding: 16px; }
+  .panel-title { display: flex; align-items: center; gap: 8px; font: 700 17px Manrope; margin: 0 0 12px; }
+  .count { background: var(--accent); color: #fff; border-radius: 999px; font-size: 12px; padding: 1px 8px; }
+  .row { display: flex; gap: 14px; overflow-x: auto; padding-bottom: 4px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 0 14px; border-radius: 9px; font: 600 13px Inter; border: 1px solid transparent; cursor: pointer; white-space: nowrap; color: var(--fg); background: none; text-decoration: none; }
+  .btn.primary { background: linear-gradient(#3a9bff, #0b5fd1); color: #fff; box-shadow: 0 4px 16px -4px rgba(43,140,255,.7); }
+  .btn.ghost { border-color: var(--line); }
+  .btn.icon { width: 38px; padding: 0; border-color: var(--line); }
+  .muted { color: var(--muted); }
+  svg.i { width: 16px; height: 16px; flex: none; }
+
+  /* ---------- A: compact card ---------- */
+  .a { width: 330px; flex: none; background: var(--bg2); border: 1px solid var(--line); border-radius: 14px; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .a .top { display: flex; align-items: center; gap: 10px; }
+  .avatar { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font: 800 14px Manrope; background: rgba(43,140,255,.15); color: var(--accent); border: 1px solid rgba(43,140,255,.4); flex: none; }
+  .a .name { font: 700 15px Manrope; }
+  .a .time { margin-left: auto; font-size: 12px; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 600; border: 1px solid var(--line); }
+  .chip.svc { background: rgba(47,111,214,.15); border-color: rgba(47,111,214,.5); }
+  .chip.date { background: rgba(43,140,255,.08); border-color: rgba(43,140,255,.45); color: #8cc4ff; }
+  .quote { margin: 0; border-left: 2px solid var(--accent); padding: 2px 0 2px 10px; color: var(--muted); font-size: 13px; font-style: italic; }
+  .a .actions { display: flex; gap: 6px; }
+  .a .actions .btn.primary { flex: 1; }
+
+  /* ---------- B: detailed card ---------- */
+  .b { width: 360px; flex: none; border-radius: 14px; overflow: hidden; border: 1px solid var(--line); background: var(--bg2); }
+  .b .strip { display: flex; align-items: center; gap: 8px; padding: 9px 14px; font: 700 13px Manrope; color: #fff; background: linear-gradient(90deg, rgba(47,111,214,.55), rgba(47,111,214,.15)); border-bottom: 1px solid rgba(47,111,214,.5); }
+  .b .strip .time { margin-left: auto; font: 500 12px Inter; color: #cfe2ff; }
+  .b .body { padding: 14px; display: grid; gap: 12px; }
+  .b .who { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .b .name { font: 800 18px Manrope; }
+  .b .contact { display: flex; gap: 6px; }
+  .b dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 13px; }
+  .b dt { color: var(--muted); }
+  .b dd { margin: 0; }
+  .when { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(43,140,255,.45); background: rgba(43,140,255,.08); }
+  .cal { width: 44px; border-radius: 8px; overflow: hidden; text-align: center; border: 1px solid rgba(43,140,255,.5); flex: none; }
+  .cal b { display: block; background: var(--accent); color: #fff; font: 700 10px Inter; text-transform: uppercase; padding: 1px 0; }
+  .cal span { display: block; font: 800 18px Manrope; padding: 2px 0; }
+  .msg { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--surface); font-size: 13px; }
+  .b .foot { display: flex; gap: 8px; padding: 0 14px 14px; }
+  .b .foot .btn { flex: 1; }
+
+  /* ---------- C: list rows ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 820px; }
+  th { text-align: left; font: 600 12px Inter; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  td { padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tr:last-child td { border-bottom: 0; }
+  tr:hover td { background: rgba(43,140,255,.04); }
+  .c-name { font: 700 14px Manrope; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--head); margin-right: 6px; }
+  .trunc { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+  .new { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); margin-right: 8px; vertical-align: middle; }
+  .scroll { overflow-x: auto; }
+  .hint { color: var(--muted); font-size: 12px; margin-top: 8px; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></symbol>
+  <symbol id="viber" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2-5.3A8.4 8.4 0 1 1 21 11.5Z"/></symbol>
+  <symbol id="cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></g></symbol>
+  <symbol id="light" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12c9 0 16 5 16 12s-7 12-16 12c-2 0-3-1-3-3V15c0-2 1-3 3-3Z"/><circle cx="27" cy="24" r="4"/><path d="M3 16h10M2 24h11M3 32h10"/></g></symbol>
+  <symbol id="drag" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></g></symbol>
+</svg>
+
+<main>
+  <h1>Как да изглежда заявката</h1>
+  <p class="lead">Три варианта за картата в „Неразпределени“, в новите сини цветове на сайта. Данните са от твоята заявка. Избери един и ще го сложа в админ панела.</p>
+
+  <!-- ===================== A ===================== -->
+  <section class="variant">
+    <div class="vhead"><span class="tag">A</span><h2>Компактна карта</h2>
+      <p>Всичко важно на един поглед. Телефон и Viber с едно натискане, съобщението като цитат.</p></div>
+    <div class="panel">
+      <p class="panel-title">Неразпределени <span class="count">2</span></p>
+      <div class="row">
+        <article class="a">
+          <div class="top">
+            <span class="avatar">M</span>
+            <div><div class="name">Marti</div><div class="muted" style="font-size:12px">0899 971 212</div></div>
+            <span class="time">преди 2 ч</span>
+          </div>
+          <div class="chips">
+            <span class="chip svc"><svg class="i" style="color:#8cb6ff"><use href="#light"/></svg>Полиране на фарове</span>
+            <span class="chip date"><svg class="i"><use href="#cal"/></svg>Иска 8 декември</span>
+          </div>
+          <p class="quote">„Iskam novo polirani farove.“</p>
+          <div class="actions">
+            <a class="btn primary">Разпредели</a>
+            <a class="btn ghost">На 8 дек</a>
+            <a class="btn icon" title="Обади се"><svg class="i"><use href="#phone"/></svg></a>
+            <a class="btn icon" title="Viber" style="color:#a99cff"><svg class="i"><use href="#viber"/></svg></a>
+          </div>
+        </article>
+        <article class="a">
+          <div class="top">
+            <span class="avatar">И</span>
+            <div><div class="name">Иван Петров</div><div class="muted" style="font-size:12px">0888 123 456</div></div>
+            <span class="time">вчера</span>
+          </div>
+          <div class="chips">
+            <span class="chip svc" style="background:rgba(31,138,153,.15);border-color:rgba(31,138,153,.55)">Пране на интериор</span>
+            <span class="chip">Golf 7</span>
+          </div>
+          <p class="quote">„Седалките са доста зацапани, има и петна по тавана.“</p>
+          <div class="actions">
+            <a class="btn primary">Разпредели</a>
+            <a class="btn icon"><svg class="i"><use href="#phone"/></svg></a>
+            <a class="btn icon" style="color:#a99cff"><svg class="i"><use href="#viber"/></svg></a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== B ===================== -->
+  <section class="variant">
+    <div class="vhead"><span class="tag">B</span><h2>Детайлна карта</h2>
+      <p>Цветна лента с услугата, голяма дата като в календар и пълното съобщение. Най-ясна, но по-висока.</p></div>
+    <div class="panel">
+      <p class="panel-title">Неразпределени <span class="count">1</span></p>
+      <div class="row">
+        <article class="b">
+          <div class="strip"><svg class="i" style="width:20px;height:20px"><use href="#light"/></svg>Полиране на фарове<span class="time">получена 9 ное, 21:14</span></div>
+          <div class="body">
+            <div class="who">
+              <div class="name">Marti</div>
+              <div class="contact">
+                <a class="btn icon" title="Обади се"><svg class="i"><use href="#phone"/></svg></a>
+                <a class="btn icon" title="Viber" style="color:#a99cff"><svg class="i"><use href="#viber"/></svg></a>
+              </div>
+            </div>
+            <dl><dt>Телефон</dt><dd>0899 971 212</dd><dt>Автомобил</dt><dd class="muted">не е посочен</dd></dl>
+            <div class="when">
+              <div class="cal"><b>дек</b><span>8</span></div>
+              <div><div style="font-weight:600">Предпочита понеделник, 8 декември</div><div class="muted" style="font-size:12px">след 4 седмици</div></div>
+            </div>
+            <p class="msg">Iskam novo polirani farove.</p>
+          </div>
+          <div class="foot">
+            <a class="btn primary">Разпредели</a>
+            <a class="btn ghost">На 8 декември</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== C ===================== -->
+  <section class="variant">
+    <div class="vhead"><span class="tag">C</span><h2>Списък</h2>
+      <p>По един ред на заявка, като в имейл. Най-удобно, когато заявките станат много.</p></div>
+    <div class="panel">
+      <p class="panel-title">Неразпределени <span class="count">2</span></p>
+      <div class="scroll">
+        <table>
+          <thead><tr><th></th><th>Клиент</th><th>Услуга</th><th>Желана дата</th><th>Съобщение</th><th>Получена</th><th></th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="width:24px;color:var(--muted)"><svg class="i"><use href="#drag"/></svg></td>
+              <td><span class="new"></span><span class="c-name">Marti</span><div class="muted" style="font-size:12px;margin-left:15px">0899 971 212</div></td>
+              <td><span class="dot"></span>Полиране на фарове</td>
+              <td style="color:#8cc4ff;font-weight:600">8 дек, пн</td>
+              <td><div class="trunc">Iskam novo polirani farove.</div></td>
+              <td class="muted">преди 2 ч</td>
+              <td style="text-align:right;white-space:nowrap"><a class="btn icon"><svg class="i"><use href="#phone"/></svg></a> <a class="btn primary">Разпредели</a></td>
+            </tr>
+            <tr>
+              <td style="color:var(--muted)"><svg class="i"><use href="#drag"/></svg></td>
+              <td><span class="c-name" style="margin-left:15px">Иван Петров</span><div class="muted" style="font-size:12px;margin-left:15px">0888 123 456</div></td>
+              <td><span class="dot" style="background:var(--interior)"></span>Пране на интериор</td>
+              <td class="muted">—</td>
+              <td><div class="trunc">Седалките са доста зацапани, има и петна по тавана.</div></td>
+              <td class="muted">вчера</td>
+              <td style="text-align:right;white-space:nowrap"><a class="btn icon"><svg class="i"><use href="#phone"/></svg></a> <a class="btn primary">Разпредели</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint">Синята точка = нова, още непрочетена заявка. Редът се плъзга към ден в календара, както и сега.</p>
+    </div>
+  </section>
+</main>
+</body>
+</html>
