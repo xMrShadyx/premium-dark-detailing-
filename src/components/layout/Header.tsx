@@ -53,9 +53,9 @@ export function Header() {
               <img
                 src={assetUrl(siteConfig.logo)}
                 alt={siteConfig.businessName}
-                width={520}
-                height={229}
-                className="h-12 w-auto mix-blend-screen lg:h-16"
+                width={640}
+                height={266}
+                className="h-12 w-auto lg:h-16"
               />
             ) : (
               siteConfig.businessName
