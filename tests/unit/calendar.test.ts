@@ -18,6 +18,7 @@ const row = (id: string, start: Date, minutes: number): InquiryRow => ({
   scheduled_at: start.toISOString(),
   duration_minutes: minutes,
   admin_note: null,
+  price: null,
   source: "admin",
 });
 

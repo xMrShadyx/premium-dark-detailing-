@@ -142,6 +142,8 @@ The customer is notified manually (phone / Viber); no automatic emails.
 
 1. Create a project at supabase.com (region: Frankfurt / EU).
 2. **SQL Editor** → paste and run `supabase/migrations/20261109000000_admin_panel.sql`.
+   Then run every later file in `supabase/migrations/` in name order (e.g. `20261110000000_inquiry_price.sql`
+   adds the booking price used by the statistics tab). Run new ones before deploying code that needs them.
 3. **Authentication → Sign In / Providers** → turn **off** "Allow new users to sign up".
 4. **Authentication → Users → Add user** → your email and a strong password.
 5. **SQL Editor** → make that user the admin:

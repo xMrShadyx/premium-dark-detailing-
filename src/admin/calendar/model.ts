@@ -153,3 +153,12 @@ export const DURATIONS: { label: string; minutes: number }[] = [
   { label: "5 дни", minutes: 4 * 1440 + 480 },
   { label: "7 дни", minutes: 6 * 1440 + 480 },
 ];
+
+/** "80", "80,50", "1 200.5" → number; "" → null; anything else (or negative) → NaN. */
+export function parsePrice(text: string): number | null {
+  const clean = text.replace(/[\s€]/g, "").replace(",", ".");
+  if (!clean) return null;
+  if (!/^\d+(\.\d{1,2})?$/.test(clean)) return NaN;
+  const value = Number(clean);
+  return value <= 1_000_000 ? value : NaN;
+}

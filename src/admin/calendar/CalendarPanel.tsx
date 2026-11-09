@@ -22,6 +22,7 @@ import {
   MONTHS_BG,
   MONTHS_BG_LONG,
   overlappingIds,
+  parsePrice,
   shadeIndexes,
   WEEKDAYS_BG,
   type MonthRow,
@@ -156,6 +157,7 @@ export function CalendarPanel({
       scheduled_at: from.toISOString(),
       duration_minutes: Math.round((to.getTime() - from.getTime()) / 60_000),
       admin_note: values.note.trim() || null,
+      price: parsePrice(values.price),
     };
     void run(async () => {
       if (dialog.mode === "create") await createBooking(sb, fields);

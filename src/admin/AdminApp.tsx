@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from "react";
 import type { Session, SupabaseClient } from "@supabase/supabase-js";
-import { CalendarDays, ExternalLink, Images, Inbox, Loader2, LogOut } from "lucide-react";
+import { BarChart3, CalendarDays, ExternalLink, Images, Inbox, Loader2, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { getSupabase } from "@/lib/supabase";
@@ -11,10 +11,11 @@ import { CalendarPanel } from "./calendar/CalendarPanel";
 import { InquiriesPanel } from "./InquiriesPanel";
 import { SchedulePanel } from "./SchedulePanel";
 import { GalleryPanel } from "./GalleryPanel";
+import { StatsPanel } from "./StatsPanel";
 import { S } from "./strings";
 import { inputClass } from "./ui";
 
-type Tab = "inquiries" | "schedule" | "gallery";
+type Tab = "inquiries" | "schedule" | "stats" | "gallery";
 
 function Centered({ children }: { children: ReactNode }) {
   return <div className="mx-auto flex min-h-svh max-w-md flex-col justify-center gap-4 px-4 py-12">{children}</div>;
@@ -64,7 +65,7 @@ export function AdminApp() {
   const [admin, setAdmin] = useState<boolean | undefined>(undefined);
   const [tab, setTab] = useState<Tab>(() => {
     const h = window.location.hash.slice(1);
-    return h === "inquiries" || h === "gallery" ? h : "schedule";
+    return h === "inquiries" || h === "gallery" || h === "stats" ? h : "schedule";
   });
   const [inquiries, setInquiries] = useState<InquiryRow[] | null>(null);
   const [closedDays, setClosedDays] = useState<ClosedDay[]>([]);
@@ -166,6 +167,7 @@ export function AdminApp() {
   const tabs: { id: Tab; label: string; icon: typeof Inbox; badge?: number }[] = [
     { id: "inquiries", label: S.tabs.inquiries, icon: Inbox },
     { id: "schedule", label: S.tabs.schedule, icon: CalendarDays, badge: newCount },
+    { id: "stats", label: S.tabs.stats, icon: BarChart3 },
     { id: "gallery", label: S.tabs.gallery, icon: Images },
   ];
 
@@ -247,6 +249,7 @@ export function AdminApp() {
             )}
           </div>
         )}
+        {tab === "stats" && <StatsPanel inquiries={inquiries} />}
         {tab === "gallery" && <GalleryPanel sb={sb} />}
       </main>
     </div>

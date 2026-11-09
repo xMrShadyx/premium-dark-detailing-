@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
-import { CalendarCheck, Check, Loader2, Phone, RotateCcw, Trash2, X } from "lucide-react";
+import { CalendarCheck, Check, Loader2, Phone, RotateCcw, Trash2, X, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { getEnabledServices } from "@/config";
 import { telHref } from "@/lib/contact";
 import type { InquiryRow } from "../api";
 import { inputClass, serviceDuration, toLocalInputs } from "../ui";
-import { DURATIONS } from "./model";
+import { DURATIONS, parsePrice } from "./model";
 
 export type DialogState =
   /** New manual booking on a day. */
@@ -25,6 +25,8 @@ export type BookingValues = {
   endDate: string;
   endTime: string;
   note: string;
+  /** As typed, e.g. "80" or "80,50"; empty = no price. */
+  price: string;
 };
 
 type When = Pick<BookingValues, "startDate" | "startTime" | "endDate" | "endTime">;
@@ -61,7 +63,7 @@ function initialValues(state: DialogState): BookingValues {
   const services = getEnabledServices();
   if (state.mode === "create") {
     const serviceId = services[0]?.id ?? "";
-    return { name: "", phone: "", serviceId, vehicle: "", ...range(state.date, "09:00", serviceDuration(serviceId)), note: "" };
+    return { name: "", phone: "", serviceId, vehicle: "", ...range(state.date, "09:00", serviceDuration(serviceId)), note: "", price: "" };
   }
   const row = state.row;
   const when = state.mode === "edit" && row.scheduled_at ? toLocalInputs(new Date(row.scheduled_at)) : null;
@@ -76,6 +78,7 @@ function initialValues(state: DialogState): BookingValues {
       row.duration_minutes ?? serviceDuration(row.service_id),
     ),
     note: row.admin_note ?? "",
+    price: row.price === null ? "" : String(row.price).replace(".", ","),
   };
 }
 
@@ -114,7 +117,9 @@ export function BookingDialog({ state, busy, error, onClose, onSave, onStatus, o
     /^\d{2}:\d{2}$/.test(values.startTime) &&
     /^\d{4}-\d{2}-\d{2}$/.test(values.endDate) &&
     /^\d{2}:\d{2}$/.test(values.endTime) &&
-    length !== null;
+    length !== null &&
+    !Number.isNaN(parsePrice(values.price));
+  const badPrice = Number.isNaN(parsePrice(values.price));
   const endBeforeStart = !!values.endDate && !!values.endTime && length === null;
 
   const submit = (e: FormEvent) => {
@@ -200,6 +205,18 @@ export function BookingDialog({ state, busy, error, onClose, onSave, onStatus, o
           {endBeforeStart && (
             <p role="alert" className="text-sm text-error sm:col-span-2">Краят трябва да е след началото.</p>
           )}
+          <label className="flex flex-col gap-1.5 text-sm font-medium">
+            Цена (€)
+            <input
+              inputMode="decimal"
+              placeholder="напр. 80"
+              value={values.price}
+              onChange={(e) => set("price", e.target.value)}
+              aria-invalid={badPrice}
+              className={inputClass}
+            />
+            {badPrice && <span role="alert" className="text-xs font-normal text-error">Въведете сума, напр. 80 или 80,50.</span>}
+          </label>
           <label className="flex flex-col gap-1.5 text-sm font-medium sm:col-span-2">
             Бележка
             <textarea rows={2} maxLength={2000} value={values.note} onChange={(e) => set("note", e.target.value)} className={inputClass} />
@@ -220,9 +237,14 @@ export function BookingDialog({ state, busy, error, onClose, onSave, onStatus, o
           {state.mode === "edit" && onStatus && (
             <>
               {state.row.status === "scheduled" ? (
-                <Button size="sm" variant="secondary" disabled={busy} onClick={() => onStatus("done")}>
-                  <Check aria-hidden="true" size={16} /> Завършена
-                </Button>
+                <>
+                  <Button size="sm" variant="secondary" disabled={busy} onClick={() => onStatus("done")}>
+                    <Check aria-hidden="true" size={16} /> Завършена
+                  </Button>
+                  <Button size="sm" variant="ghost" disabled={busy} onClick={() => onStatus("rejected")}>
+                    <XCircle aria-hidden="true" size={16} /> Неуспешна
+                  </Button>
+                </>
               ) : (
                 <Button size="sm" variant="secondary" disabled={busy} onClick={() => onStatus("scheduled")}>
                   <RotateCcw aria-hidden="true" size={16} /> Не е завършена

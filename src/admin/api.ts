@@ -20,18 +20,28 @@ export type InquiryRow = {
   duration_minutes: number | null;
   admin_note: string | null;
   source: "website" | "admin";
+  /** EUR, set by the owner; null when not entered. */
+  price: number | null;
 };
 
 export type InquiryPatch = Partial<
   Pick<
     InquiryRow,
-    "status" | "scheduled_at" | "duration_minutes" | "admin_note" | "name" | "phone" | "service_id" | "vehicle"
+    | "status"
+    | "scheduled_at"
+    | "duration_minutes"
+    | "admin_note"
+    | "name"
+    | "phone"
+    | "service_id"
+    | "vehicle"
+    | "price"
   >
 >;
 
 export type NewBooking = Pick<
   InquiryRow,
-  "name" | "phone" | "service_id" | "vehicle" | "scheduled_at" | "duration_minutes" | "admin_note"
+  "name" | "phone" | "service_id" | "vehicle" | "scheduled_at" | "duration_minutes" | "admin_note" | "price"
 >;
 
 export type ClosedDay = { day: string; note: string | null };

@@ -27,7 +27,7 @@ export const S = {
   noAccessTitle: "Нямате достъп",
   noAccessText: "Този акаунт не е администратор. Добавете го в таблицата admins (виж README).",
 
-  tabs: { inquiries: "Заявки", schedule: "График", gallery: "Галерия" },
+  tabs: { inquiries: "Заявки", schedule: "График", stats: "Статистика", gallery: "Галерия" },
 
   status: {
     new: "Нова",
