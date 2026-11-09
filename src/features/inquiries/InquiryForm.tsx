@@ -269,7 +269,7 @@ export function InquiryForm() {
             min={todayIso()}
             value={values.preferredDate}
             onChange={(e) => set("preferredDate", e.target.value)}
-            className={cn(inputClass, borderFor("preferredDate"), "[color-scheme:dark]")}
+            className={cn(inputClass, borderFor("preferredDate"))}
           />,
           true,
         )}

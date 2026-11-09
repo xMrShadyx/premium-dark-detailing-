@@ -4,7 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0B0B0D" />
-    <meta name="color-scheme" content="dark" />
+    <meta name="color-scheme" content="dark light" />
+    <script>
+      // Set the theme before first paint to avoid a flash. Saved choice wins, else the OS setting.
+      (function () {
+        var theme;
+        try { theme = localStorage.getItem("preferred-theme"); } catch (e) {}
+        if (theme !== "light" && theme !== "dark") {
+          theme = window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === "light" ? "#F6F5F2" : "#0B0B0D";
+      })();
+    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>Пране на автомобилен интериор и възстановяване на фарове</title>
     <meta

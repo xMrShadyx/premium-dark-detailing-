@@ -54,7 +54,7 @@ export function GallerySection({ items = getPublishedGallery() }: { items?: Gall
 
         {items.length === 0 ? (
           <div className="mt-12 grid overflow-hidden rounded-2xl border border-line sm:grid-cols-[1fr_auto_1fr]">
-            <div aria-hidden="true" className="relative hidden h-44 bg-[repeating-linear-gradient(135deg,#1a1a1e_0_10px,#17171a_10px_20px)] sm:block">
+            <div aria-hidden="true" className="relative hidden h-44 bg-[repeating-linear-gradient(135deg,var(--color-surface)_0_10px,var(--color-bg-2)_10px_20px)] sm:block">
               <span className="absolute top-4 left-4 text-xs font-semibold tracking-[0.2em] text-fg-muted uppercase">
                 {t("gallery.before")}
               </span>
@@ -63,7 +63,7 @@ export function GallerySection({ items = getPublishedGallery() }: { items?: Gall
               <p className="font-display text-lg font-semibold text-fg">{t("gallery.emptyTitle")}</p>
               <p className="text-sm text-fg-muted">{t("gallery.emptyText")}</p>
             </div>
-            <div aria-hidden="true" className="relative hidden h-44 bg-[radial-gradient(80%_120%_at_100%_0%,#2a2519_0%,#141417_70%)] sm:block">
+            <div aria-hidden="true" className="relative hidden h-44 bg-[radial-gradient(80%_120%_at_100%_0%,color-mix(in_srgb,var(--color-gold)_22%,transparent)_0%,var(--color-bg-2)_70%)] sm:block">
               <span className="absolute top-4 right-4 text-xs font-semibold tracking-[0.2em] text-gold uppercase">
                 {t("gallery.after")}
               </span>

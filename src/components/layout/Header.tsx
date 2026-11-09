@@ -6,6 +6,7 @@ import { MobileMenu } from "./MobileMenu";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { hasBusinessName, siteConfig } from "@/config";
 import { useScrolled } from "@/hooks/useScrolled";
 import { cn } from "@/lib/cn";
@@ -29,7 +30,8 @@ export function Header() {
         "fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-300",
         scrolled || menuOpen
           ? "border-line/70 bg-bg/90 backdrop-blur-md"
-          : "border-transparent bg-bg/0",
+          : // Over the always-dark hero the header uses the dark palette in both themes.
+            "theme-dark border-transparent bg-transparent",
       )}
     >
       <a
@@ -59,6 +61,7 @@ export function Header() {
 
         <div className="ml-auto flex items-center gap-2 sm:gap-3">
           <LanguageSwitcher />
+          <ThemeToggle />
 
           <ButtonLink href="#contact" size="sm" className="max-md:hidden">
             {t("navigation.cta")}

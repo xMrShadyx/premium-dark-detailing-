@@ -11,7 +11,9 @@
     "closeMenu": "Close menu",
     "languageSwitcher": "Language selection",
     "contactShortcut": "Go to contact",
-    "footerNavigation": "Footer navigation"
+    "footerNavigation": "Footer navigation",
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme"
   },
   "languages": {
     "bg": "Български",

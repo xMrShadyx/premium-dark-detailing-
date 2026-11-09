@@ -38,7 +38,7 @@ export function ServiceCard({ service, index }: Props) {
         ) : (
           // Neutral visual until real photography is supplied.
           <div aria-hidden="true" className="absolute inset-0">
-            <div className="absolute inset-0 bg-[radial-gradient(80%_100%_at_100%_0%,#262219_0%,transparent_60%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(80%_100%_at_100%_0%,color-mix(in_srgb,var(--color-gold)_16%,transparent)_0%,transparent_60%)]" />
             <div className="absolute inset-y-0 right-[18%] w-px rotate-[20deg] bg-gradient-to-b from-transparent via-gold/40 to-transparent" />
           </div>
         )}

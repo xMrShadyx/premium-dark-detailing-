@@ -47,7 +47,7 @@ export function HeroSection() {
     <section
       id="home"
       aria-labelledby="hero-title"
-      className="relative isolate flex min-h-[88svh] items-end overflow-hidden pt-28 pb-16 sm:items-center sm:pb-24 lg:min-h-[92svh]"
+      className="theme-dark relative isolate flex min-h-[88svh] bg-bg items-end overflow-hidden pt-28 pb-16 sm:items-center sm:pb-24 lg:min-h-[92svh]"
     >
       {image ? (
         <>

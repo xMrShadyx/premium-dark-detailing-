@@ -11,7 +11,9 @@
     "closeMenu": "Затвори менюто",
     "languageSwitcher": "Избор на език",
     "contactShortcut": "Към контактите",
-    "footerNavigation": "Навигация в долната част"
+    "footerNavigation": "Навигация в долната част",
+    "switchToLight": "Включи светла тема",
+    "switchToDark": "Включи тъмна тема"
   },
   "languages": {
     "bg": "Български",

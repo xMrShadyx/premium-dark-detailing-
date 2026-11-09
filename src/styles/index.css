@@ -5,6 +5,8 @@
    Usage: bg-bg, bg-bg-2, bg-surface, text-fg, text-fg-muted,
           border-line, text-gold, bg-gold, font-display, font-sans …
    ------------------------------------------------------------------ */
+/* Dark is the default palette. The light palette and the always-dark
+   .theme-dark scope are defined in the base layer below. */
 @theme {
   --color-bg: #0b0b0d;
   --color-bg-2: #141417;
@@ -33,11 +35,63 @@
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ------------------------------------------------------------------
+   Themes. <html data-theme="light|dark"> is set before first paint by the
+   inline script in index.html (saved choice, else the OS preference).
+   .theme-dark forces the dark palette inside a subtree (hero, header over hero).
+   ------------------------------------------------------------------ */
 @layer base {
+  :root[data-theme="light"] {
+    --color-bg: #f6f5f2;
+    --color-bg-2: #edebe6;
+    --color-surface: #ffffff;
+    --color-surface-hover: #f2f0eb;
+    --color-gold: #8a6a2b; /* darker gold: 5:1 on white for text and buttons */
+    --color-gold-hover: #73581f;
+    --color-fg: #141417;
+    --color-fg-muted: #55555c;
+    --color-line: #dad7d0;
+    --color-error: #b93434;
+    --color-success: #2b7a4f;
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"],
+  .theme-dark {
+    --color-bg: #0b0b0d;
+    --color-bg-2: #141417;
+    --color-surface: #1a1a1e;
+    --color-surface-hover: #242429;
+    --color-gold: #c9a45c;
+    --color-gold-hover: #d8b775;
+    --color-fg: #f5f5f5;
+    --color-fg-muted: #b8b8b8;
+    --color-line: #343438;
+    --color-error: #ef6b6b;
+    --color-success: #69b58c;
+    color-scheme: dark;
+  }
+
+  .theme-dark {
+    color: var(--color-fg);
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     color-scheme: dark;
+  }
+
+  html,
+  body {
+    transition: background-color 0.25s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html,
+    body {
+      transition: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
