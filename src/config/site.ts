@@ -8,8 +8,8 @@ import type { SiteConfig } from "./schema";
  * instead of showing placeholders.
  */
 export const siteConfig = {
-  businessName: "",
-  logo: null,
+  businessName: "MM Detailing",
+  logo: "/images/brand/mm-mark.webp",
   siteUrl: "",
 
   defaultLanguage: "bg",

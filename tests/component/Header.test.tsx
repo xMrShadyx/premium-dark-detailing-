@@ -14,10 +14,10 @@ describe("Header", () => {
     expect(hrefs).toEqual(["#services", "#pricing", "#gallery", "#contact"]);
   });
 
-  it("renders no brand element when the business name is empty", () => {
+  it("renders the logo as a link home, named after the business", () => {
     renderWithProviders(<Header />);
-    expect(screen.queryByRole("link", { name: /studio/i })).not.toBeInTheDocument();
-    expect(screen.queryByRole("img")).not.toBeInTheDocument();
+    const logo = screen.getByRole("img", { name: "MM Detailing" });
+    expect(logo.closest("a")).toHaveAttribute("href", "#home");
   });
 
   it("opens the mobile menu, locks scroll, and closes on Escape", async () => {

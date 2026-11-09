@@ -48,10 +48,18 @@ export function Header() {
             href="#home"
             className="flex shrink-0 items-center gap-2 font-display text-sm font-semibold tracking-wide text-fg-muted transition-colors hover:text-fg"
           >
-            {siteConfig.logo && (
-              <img src={assetUrl(siteConfig.logo)} alt="" width={28} height={28} className="h-7 w-7" />
+            {siteConfig.logo ? (
+              // The logo already spells the name (MM), so it carries the name as alt text.
+              <img
+                src={assetUrl(siteConfig.logo)}
+                alt={siteConfig.businessName}
+                width={480}
+                height={142}
+                className="h-9 w-auto rounded-md bg-black lg:h-11"
+              />
+            ) : (
+              siteConfig.businessName
             )}
-            {siteConfig.businessName}
           </a>
         )}
 
