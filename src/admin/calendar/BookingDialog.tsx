@@ -176,6 +176,21 @@ export function BookingDialog({ state, busy, error, onClose, onSave, onStatus, o
             </select>
           </label>
           <label className="flex flex-col gap-1.5 text-sm font-medium">
+            Сума
+            <span className="relative">
+              <input
+                inputMode="decimal"
+                placeholder="напр. 80"
+                value={values.price}
+                onChange={(e) => set("price", e.target.value)}
+                aria-invalid={badPrice}
+                className={`${inputClass} pr-10 font-semibold tabular-nums`}
+              />
+              <span aria-hidden="true" className="pointer-events-none absolute inset-y-0 right-3.5 flex items-center text-fg-muted">€</span>
+            </span>
+            {badPrice && <span role="alert" className="text-xs font-normal text-error">Въведете сума, напр. 80 или 80,50.</span>}
+          </label>
+          <label className="flex flex-col gap-1.5 text-sm font-medium sm:col-span-2">
             Автомобил
             <input maxLength={100} value={values.vehicle} onChange={(e) => set("vehicle", e.target.value)} className={inputClass} />
           </label>
@@ -205,18 +220,6 @@ export function BookingDialog({ state, busy, error, onClose, onSave, onStatus, o
           {endBeforeStart && (
             <p role="alert" className="text-sm text-error sm:col-span-2">Краят трябва да е след началото.</p>
           )}
-          <label className="flex flex-col gap-1.5 text-sm font-medium">
-            Цена (€)
-            <input
-              inputMode="decimal"
-              placeholder="напр. 80"
-              value={values.price}
-              onChange={(e) => set("price", e.target.value)}
-              aria-invalid={badPrice}
-              className={inputClass}
-            />
-            {badPrice && <span role="alert" className="text-xs font-normal text-error">Въведете сума, напр. 80 или 80,50.</span>}
-          </label>
           <label className="flex flex-col gap-1.5 text-sm font-medium sm:col-span-2">
             Бележка
             <textarea rows={2} maxLength={2000} value={values.note} onChange={(e) => set("note", e.target.value)} className={inputClass} />

@@ -60,7 +60,7 @@ export function HeroSection() {
               <CalendarDays aria-hidden="true" size={19} />
               {t("hero.primaryButton")}
             </Button>
-            <ButtonLink href="#gallery" variant="secondary" className="min-w-44">
+            <ButtonLink href="#gallery" variant="outline" className="min-w-44">
               <Play aria-hidden="true" size={17} className="text-accent" />
               {t("hero.secondaryButton")}
             </ButtonLink>

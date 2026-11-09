@@ -1,7 +1,7 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "ghost";
+type Variant = "primary" | "secondary" | "outline" | "ghost";
 type Size = "sm" | "md";
 
 const base =
@@ -13,7 +13,9 @@ const base =
 const variants: Record<Variant, string> = {
   primary:
     "bg-gradient-to-b from-[#3a9bff] to-[#0b5fd1] text-white glow-accent hover:from-[#55a9ff] hover:to-[#1a6be0]",
-  secondary: "border border-fg/80 text-fg hover:border-accent hover:bg-accent/10",
+  secondary: "border border-line bg-surface/60 text-fg hover:border-accent/60 hover:bg-accent/10",
+  /** White outline from the site mock-up (hero "Виж резултати", "Изпрати имейл"). */
+  outline: "border border-fg/80 text-fg hover:border-accent hover:bg-accent/10",
   ghost: "text-fg-muted hover:text-fg",
 };
 

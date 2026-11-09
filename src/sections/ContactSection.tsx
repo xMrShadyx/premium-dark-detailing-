@@ -63,7 +63,7 @@ export function ContactSection() {
             </a>
           )}
           {contact.email && (
-            <a href={mailtoHref(contact.email) ?? undefined} className={buttonClasses({ variant: "secondary" }, btn)}>
+            <a href={mailtoHref(contact.email) ?? undefined} className={buttonClasses({ variant: "outline" }, btn)}>
               <Mail aria-hidden="true" size={20} className="text-accent" />
               {t("cta.email")}
             </a>

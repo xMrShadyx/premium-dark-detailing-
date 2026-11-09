@@ -87,7 +87,7 @@ export function RequestCard({ row, color, selected, onAssign, onPreferredDate, o
           {selected ? "Избира се…" : "Разпредели"}
         </Button>
         {preferred && (
-          <Button size="sm" variant="secondary" className="min-h-9 border-line px-3" onClick={onPreferredDate}>
+          <Button size="sm" variant="secondary" className="min-h-9 px-3" onClick={onPreferredDate}>
             На {shortDate.format(preferred)}
           </Button>
         )}

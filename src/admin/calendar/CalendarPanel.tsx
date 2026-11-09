@@ -37,7 +37,8 @@ const SHADES: ((color: string) => string)[] = [
   (c) => `color-mix(in srgb, ${c} 72%, white)`,
   (c) => `color-mix(in srgb, ${c} 68%, black)`,
 ];
-const LANE = 1.45; // rem per stacked bar
+const LANE = 1.45;
+const eur = new Intl.NumberFormat("bg-BG", { style: "currency", currency: "EUR", minimumFractionDigits: 0, maximumFractionDigits: 2 }); // rem per stacked bar
 const MONTHS_SHOWN = 12;
 
 type Menu = { day: string; x: number; y: number };
@@ -242,6 +243,7 @@ export function CalendarPanel({
           {bars.map((bar) => {
             const row = bar.row;
             const color = SHADES[shades.get(row.id) ?? 0]!(baseColor(row));
+            const price = row.price === null || row.price === undefined ? null : eur.format(Number(row.price));
             const time = row.scheduled_at
               ? new Date(row.scheduled_at).toLocaleTimeString("bg-BG", { hour: "2-digit", minute: "2-digit" })
               : "";
@@ -250,8 +252,8 @@ export function CalendarPanel({
                 key={row.id}
                 type="button"
                 onClick={() => setDialog({ mode: "edit", row })}
-                title={`${time} ${row.name} · ${serviceTitle(row.service_id)}${bar.overlap ? " · застъпване!" : ""}`}
-                aria-label={`${row.name}, ${serviceTitle(row.service_id)}, ${time}${row.status === "done" ? ", завършена" : ""}${bar.overlap ? ", застъпва се" : ""}`}
+                title={`${time} ${row.name} · ${serviceTitle(row.service_id)}${price ? ` · ${price}` : ""}${bar.overlap ? " · застъпване!" : ""}`}
+                aria-label={`${row.name}, ${serviceTitle(row.service_id)}, ${time}${price ? `, ${price}` : ""}${row.status === "done" ? ", завършена" : ""}${bar.overlap ? ", застъпва се" : ""}`}
                 className={cn(
                   "pointer-events-auto absolute flex items-center overflow-hidden px-1 text-left text-[11px] leading-none font-medium whitespace-nowrap text-white shadow-sm",
                   bar.continuesBefore ? "rounded-l-none" : "rounded-l-lg",
@@ -269,6 +271,7 @@ export function CalendarPanel({
                 <span className="truncate">
                   <span className="tabular-nums">{time}</span>
                   {bar.endDay - bar.startDay >= 1 && <span className="opacity-90"> {row.name}</span>}
+                  {price && bar.endDay - bar.startDay >= 2 && <span className="font-bold"> · {price}</span>}
                 </span>
               </button>
             );

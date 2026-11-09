@@ -6,6 +6,8 @@ import type { InquiryRow } from "./api";
 import { S } from "./strings";
 import { dayKey, fmt, serviceTitle } from "./ui";
 
+const eur = new Intl.NumberFormat("bg-BG", { style: "currency", currency: "EUR", minimumFractionDigits: 0, maximumFractionDigits: 2 });
+
 type Slot = { row: InquiryRow; start: Date; end: Date; overlap: boolean };
 
 /** Agenda of scheduled jobs grouped by day, with overlap warnings. */
@@ -95,7 +97,12 @@ export function SchedulePanel({ inquiries }: { inquiries: InquiryRow[] | null })
                         {fmt.time(start)}–{fmt.time(end)}
                       </p>
                       <div className="min-w-0">
-                        <p className="font-medium">{row.name} · <span className="text-fg-muted">{serviceTitle(row.service_id)}</span></p>
+                        <p className="font-medium">
+                          {row.name} · <span className="text-fg-muted">{serviceTitle(row.service_id)}</span>
+                          {row.price !== null && row.price !== undefined && (
+                            <span className="ml-2 font-semibold text-accent tabular-nums">{eur.format(Number(row.price))}</span>
+                          )}
+                        </p>
                         {row.vehicle && <p className="text-sm text-fg-muted">{row.vehicle}</p>}
                         {row.admin_note && <p className="mt-1 text-sm text-fg-muted italic">{row.admin_note}</p>}
                         {overlap && (
