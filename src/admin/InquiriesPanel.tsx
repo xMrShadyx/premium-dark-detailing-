@@ -122,7 +122,7 @@ function InquiryCard({ row, sb, onChanged }: { row: InquiryRow; sb: SupabaseClie
         )}
       </dl>
 
-      <p className="mt-3 rounded-xl bg-bg px-4 py-3 text-sm whitespace-pre-line">{row.message}</p>
+      {row.message && <p className="mt-3 rounded-xl bg-bg px-4 py-3 text-sm whitespace-pre-line">{row.message}</p>}
 
       <div className="mt-4 flex flex-wrap gap-2">
         {tel && (

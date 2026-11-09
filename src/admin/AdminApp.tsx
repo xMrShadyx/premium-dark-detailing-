@@ -6,7 +6,8 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { getSupabase } from "@/lib/supabase";
 import { BASE_PATH } from "@/lib/locale";
 import { cn } from "@/lib/cn";
-import { isAdmin, listInquiries, type InquiryRow } from "./api";
+import { isAdmin, listClosedDays, listInquiries, type ClosedDay, type InquiryRow } from "./api";
+import { CalendarPanel } from "./calendar/CalendarPanel";
 import { InquiriesPanel } from "./InquiriesPanel";
 import { SchedulePanel } from "./SchedulePanel";
 import { GalleryPanel } from "./GalleryPanel";
@@ -63,9 +64,11 @@ export function AdminApp() {
   const [admin, setAdmin] = useState<boolean | undefined>(undefined);
   const [tab, setTab] = useState<Tab>(() => {
     const h = window.location.hash.slice(1);
-    return h === "schedule" || h === "gallery" ? h : "inquiries";
+    return h === "inquiries" || h === "gallery" ? h : "schedule";
   });
   const [inquiries, setInquiries] = useState<InquiryRow[] | null>(null);
+  const [closedDays, setClosedDays] = useState<ClosedDay[]>([]);
+  const [scheduleView, setScheduleView] = useState<"calendar" | "list">("calendar");
   const [loadError, setLoadError] = useState(false);
   const configured = getSupabase() !== null;
 
@@ -106,7 +109,9 @@ export function AdminApp() {
     if (!sb) return;
     try {
       setLoadError(false);
-      setInquiries(await listInquiries(sb));
+      const [rows, closed] = await Promise.all([listInquiries(sb), listClosedDays(sb)]);
+      setInquiries(rows);
+      setClosedDays(closed);
     } catch {
       setLoadError(true);
     }
@@ -159,8 +164,8 @@ export function AdminApp() {
 
   const newCount = inquiries?.filter((i) => i.status === "new").length ?? 0;
   const tabs: { id: Tab; label: string; icon: typeof Inbox; badge?: number }[] = [
-    { id: "inquiries", label: S.tabs.inquiries, icon: Inbox, badge: newCount },
-    { id: "schedule", label: S.tabs.schedule, icon: CalendarDays },
+    { id: "inquiries", label: S.tabs.inquiries, icon: Inbox },
+    { id: "schedule", label: S.tabs.schedule, icon: CalendarDays, badge: newCount },
     { id: "gallery", label: S.tabs.gallery, icon: Images },
   ];
 
@@ -210,7 +215,7 @@ export function AdminApp() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-5xl px-4 py-6">
+      <main className={cn("mx-auto px-4 py-6", tab === "schedule" ? "max-w-[100rem]" : "max-w-5xl")}>
         {loadError && tab !== "gallery" && (
           <p role="alert" className="mb-4 flex flex-wrap items-center gap-3 rounded-xl bg-error/10 px-4 py-3 text-sm text-error">
             {S.errorGeneric}
@@ -218,7 +223,30 @@ export function AdminApp() {
           </p>
         )}
         {tab === "inquiries" && <InquiriesPanel sb={sb} inquiries={inquiries} onChanged={reload} />}
-        {tab === "schedule" && <SchedulePanel inquiries={inquiries} />}
+        {tab === "schedule" && (
+          <div className="flex flex-col gap-4">
+            <div role="group" aria-label="Изглед" className="flex gap-1 self-start rounded-full border border-line p-0.5">
+              {(["calendar", "list"] as const).map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  aria-pressed={scheduleView === v}
+                  onClick={() => setScheduleView(v)}
+                  className={cn("min-h-10 rounded-full px-4 text-sm", scheduleView === v ? "bg-surface-hover font-medium text-fg" : "text-fg-muted hover:text-fg")}
+                >
+                  {v === "calendar" ? "Календар" : "Списък"}
+                </button>
+              ))}
+            </div>
+            {scheduleView === "list" ? (
+              <SchedulePanel inquiries={inquiries} />
+            ) : inquiries ? (
+              <CalendarPanel sb={sb} inquiries={inquiries} closedDays={closedDays} onChanged={reload} />
+            ) : (
+              <p className="flex items-center gap-2 text-fg-muted"><Loader2 aria-hidden="true" size={18} className="animate-spin" /> {S.loading}</p>
+            )}
+          </div>
+        )}
         {tab === "gallery" && <GalleryPanel sb={sb} />}
       </main>
     </div>

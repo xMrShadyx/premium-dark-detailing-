@@ -43,13 +43,14 @@ create table if not exists public.inquiries (
   service_id       text not null check (char_length(service_id) between 1 and 64),
   vehicle          text check (vehicle is null or char_length(vehicle) <= 100),
   preferred_date   date,
-  message          text not null check (char_length(message) between 10 and 2000),
+  message          text check (message is null or char_length(message) between 1 and 2000),
   lang             text not null default 'bg' check (lang in ('bg', 'en')),
-  consent          boolean not null check (consent),
+  consent          boolean,                                         -- true for website requests
+  source           text not null default 'website' check (source in ('website', 'admin')),
   website          text not null default '' check (website = ''),   -- honeypot: bots fill it, insert fails
   status           public.inquiry_status not null default 'new',
   scheduled_at     timestamptz,
-  duration_minutes integer check (duration_minutes is null or duration_minutes between 15 and 1440),
+  duration_minutes integer check (duration_minutes is null or duration_minutes between 15 and 10080), -- up to 7 days
   admin_note       text check (admin_note is null or char_length(admin_note) <= 2000),
   check (status <> 'scheduled' or scheduled_at is not null)
 );
@@ -62,7 +63,15 @@ alter table public.inquiries enable row level security;
 drop policy if exists "inquiries: public submit" on public.inquiries;
 create policy "inquiries: public submit" on public.inquiries
   for insert to anon, authenticated
-  with check (status = 'new' and scheduled_at is null and duration_minutes is null and admin_note is null);
+  with check (
+    source = 'website' and status = 'new' and consent is true
+    and message is not null and char_length(message) >= 10
+    and scheduled_at is null and duration_minutes is null and admin_note is null
+  );
+
+drop policy if exists "inquiries: admin insert" on public.inquiries;
+create policy "inquiries: admin insert" on public.inquiries
+  for insert to authenticated with check (public.is_admin());
 
 drop policy if exists "inquiries: admin read" on public.inquiries;
 create policy "inquiries: admin read" on public.inquiries
@@ -83,6 +92,11 @@ language plpgsql security definer
 set search_path = public
 as $$
 begin
+  new.created_at := now();
+  new.updated_at := now();
+  if public.is_admin() then
+    return new;            -- bookings the owner enters by hand are not rate-limited
+  end if;
   if (select count(*) from public.inquiries
         where phone = new.phone and created_at > now() - interval '1 hour') >= 3 then
     raise exception 'rate_limited' using errcode = 'P0001';
@@ -91,8 +105,6 @@ begin
         where created_at > now() - interval '1 hour') >= 60 then
     raise exception 'rate_limited' using errcode = 'P0001';
   end if;
-  new.created_at := now();
-  new.updated_at := now();
   return new;
 end $$;
 
@@ -102,13 +114,25 @@ create trigger inquiries_before_insert
   for each row execute function public.inquiries_before_insert();
 
 create or replace function public.touch_updated_at()
-returns trigger language plpgsql as $$
+returns trigger language plpgsql set search_path = public as $$
 begin new.updated_at := now(); return new; end $$;
 
 drop trigger if exists inquiries_touch on public.inquiries;
 create trigger inquiries_touch
   before update on public.inquiries
   for each row execute function public.touch_updated_at();
+
+-- ---------- non-working days (calendar) -------------------------------------
+create table if not exists public.closed_days (
+  day        date primary key,
+  note       text check (note is null or char_length(note) <= 200),
+  created_at timestamptz not null default now()
+);
+alter table public.closed_days enable row level security;
+
+drop policy if exists "closed days: admin all" on public.closed_days;
+create policy "closed days: admin all" on public.closed_days
+  for all to authenticated using (public.is_admin()) with check (public.is_admin());
 
 -- ---------- gallery ---------------------------------------------------------
 create table if not exists public.gallery_items (
@@ -156,6 +180,22 @@ drop policy if exists "gallery files: admin delete" on storage.objects;
 create policy "gallery files: admin delete" on storage.objects
   for delete to authenticated using (bucket_id = 'gallery' and public.is_admin());
 
+-- ---------- explicit API grants (RLS still decides which rows) ---------------
+grant usage on schema public to anon, authenticated;
+grant usage on type public.inquiry_status to anon, authenticated;
+grant insert on public.inquiries to anon;
+grant select, insert, update, delete on public.inquiries to authenticated;
+grant select on public.gallery_items to anon;
+grant select, insert, update, delete on public.gallery_items to authenticated;
+grant select, insert, update, delete on public.closed_days to authenticated;
+grant select on public.admins to authenticated;
+
 -- ---------- after creating your user (Authentication → Users → Add user) ----
 -- insert into public.admins (user_id)
 --   select id from auth.users where email = 'YOUR-EMAIL@example.com';
+
+-- Trigger functions are not meant to be called through the API.
+revoke execute on function public.inquiries_before_insert() from public, anon, authenticated;
+revoke execute on function public.touch_updated_at() from public, anon, authenticated;
+-- Note: is_admin() stays executable by anon/authenticated on purpose — RLS policies call it
+-- and it only reveals whether the *current* user is an admin.

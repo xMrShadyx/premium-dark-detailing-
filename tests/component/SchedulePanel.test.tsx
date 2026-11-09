@@ -19,6 +19,7 @@ const base: InquiryRow = {
   scheduled_at: null,
   duration_minutes: 120,
   admin_note: null,
+  source: "website",
 };
 
 function at(daysAhead: number, hour: number): string {

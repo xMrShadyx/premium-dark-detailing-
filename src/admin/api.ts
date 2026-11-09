@@ -13,17 +13,28 @@ export type InquiryRow = {
   service_id: string;
   vehicle: string | null;
   preferred_date: string | null;
-  message: string;
+  message: string | null;
   lang: "bg" | "en";
   status: InquiryStatus;
   scheduled_at: string | null;
   duration_minutes: number | null;
   admin_note: string | null;
+  source: "website" | "admin";
 };
 
 export type InquiryPatch = Partial<
-  Pick<InquiryRow, "status" | "scheduled_at" | "duration_minutes" | "admin_note">
+  Pick<
+    InquiryRow,
+    "status" | "scheduled_at" | "duration_minutes" | "admin_note" | "name" | "phone" | "service_id" | "vehicle"
+  >
 >;
+
+export type NewBooking = Pick<
+  InquiryRow,
+  "name" | "phone" | "service_id" | "vehicle" | "scheduled_at" | "duration_minutes" | "admin_note"
+>;
+
+export type ClosedDay = { day: string; note: string | null };
 
 export type GalleryRow = {
   id: string;
@@ -58,6 +69,22 @@ export async function listInquiries(sb: SupabaseClient): Promise<InquiryRow[]> {
 
 export async function updateInquiry(sb: SupabaseClient, id: string, patch: InquiryPatch): Promise<void> {
   check(await sb.from("inquiries").update(patch).eq("id", id));
+}
+
+/** A booking the owner enters by hand (phone call, walk-in). */
+export async function createBooking(sb: SupabaseClient, booking: NewBooking): Promise<void> {
+  check(
+    await sb.from("inquiries").insert({ ...booking, status: "scheduled", source: "admin", lang: "bg" }),
+  );
+}
+
+export async function listClosedDays(sb: SupabaseClient): Promise<ClosedDay[]> {
+  return (check(await sb.from("closed_days").select("day, note").order("day")) ?? []) as ClosedDay[];
+}
+
+export async function setClosedDay(sb: SupabaseClient, day: string, closed: boolean): Promise<void> {
+  if (closed) check(await sb.from("closed_days").insert({ day }));
+  else check(await sb.from("closed_days").delete().eq("day", day));
 }
 
 export async function deleteInquiry(sb: SupabaseClient, id: string): Promise<void> {
