@@ -116,6 +116,8 @@ export const galleryItemSchema = z.object({
   afterImage: z.string().trim().min(1),
   title: localizedTextSchema,
   description: localizedTextSchema.optional(),
+  /** true = digitally simulated "before"; the UI labels it so it is never read as a real result. */
+  demo: z.boolean().optional(),
   published: z.boolean(),
   order: z.number().int(),
 });

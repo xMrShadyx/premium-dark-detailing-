@@ -122,10 +122,14 @@
   "gallery": {
     "eyebrow": "Gallery",
     "title": "Before and after",
-    "subtitle": "Results from real work.",
+    "subtitle": "Drag the divider to compare.",
     "emptyTitle": "Coming soon",
     "emptyText": "We will publish before-and-after photos of real vehicles once they are ready.",
     "before": "Before",
-    "after": "After"
+    "after": "After",
+    "demoBadge": "Illustrative simulation",
+    "demoNote": "These examples are simulated: the headlight haze was added digitally to photos of new cars to show the effect of the service. They are not results from real jobs.",
+    "sliderLabel": "Before and after comparison: {{title}}",
+    "sliderHint": "Use the left and right arrow keys"
   }
 }

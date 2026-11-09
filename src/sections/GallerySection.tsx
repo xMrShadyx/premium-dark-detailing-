@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ImageOff } from "lucide-react";
+import { Info } from "lucide-react";
+import { BeforeAfterSlider } from "@/components/gallery/BeforeAfterSlider";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useLocale } from "@/app/providers/LocaleProvider";
@@ -8,35 +8,9 @@ import { getPublishedGallery } from "@/config";
 import type { GalleryItem } from "@/config/schema";
 import { assetUrl, localize } from "@/lib/locale";
 
-/** One photo; a missing file shows a neutral tile instead of a broken image (SRS §5.4). */
-function Photo({ src, label }: { src: string; label: string }) {
-  const [failed, setFailed] = useState(false);
-  return (
-    <figure className="relative aspect-[4/3] overflow-hidden rounded-xl bg-bg-2">
-      {failed ? (
-        <div className="flex h-full items-center justify-center text-fg-muted">
-          <ImageOff aria-hidden="true" size={28} />
-        </div>
-      ) : (
-        <img
-          src={assetUrl(src)}
-          alt=""
-          loading="lazy"
-          decoding="async"
-          onError={() => setFailed(true)}
-          className="h-full w-full object-cover"
-        />
-      )}
-      <figcaption className="absolute top-3 left-3 rounded-full bg-bg/80 px-3 py-1 text-xs font-semibold tracking-wider text-fg uppercase">
-        {label}
-      </figcaption>
-    </figure>
-  );
-}
-
 /**
- * Before/after gallery. Sprint 1: pairs side by side, or a designed empty state.
- * The draggable comparison slider and full-screen viewer arrive in Sprint 3.
+ * Before/after gallery: comparison sliders, or a designed empty state.
+ * Items flagged `demo` carry a visible "simulation" label (SRS §5.4).
  */
 export function GallerySection({ items = getPublishedGallery() }: { items?: GalleryItem[] }) {
   const { t } = useTranslation();
@@ -70,24 +44,46 @@ export function GallerySection({ items = getPublishedGallery() }: { items?: Gall
             </div>
           </div>
         ) : (
-          <ul className="mt-12 grid gap-8 lg:grid-cols-2">
-            {items.map((item) => (
-              <li key={item.id}>
-                <article aria-labelledby={`gallery-${item.id}`} className="flex flex-col gap-3">
-                  <div className="grid grid-cols-2 gap-2">
-                    <Photo src={item.beforeImage} label={t("gallery.before")} />
-                    <Photo src={item.afterImage} label={t("gallery.after")} />
-                  </div>
-                  <h3 id={`gallery-${item.id}`} className="font-display font-semibold text-fg">
-                    {localize(item.title, lang)}
-                  </h3>
-                  {item.description && (
-                    <p className="text-sm text-fg-muted">{localize(item.description, lang)}</p>
-                  )}
-                </article>
-              </li>
-            ))}
-          </ul>
+          <>
+            {items.some((i) => i.demo) && (
+              <p className="mt-8 flex max-w-3xl items-start gap-2.5 rounded-xl border border-gold/40 bg-gold/5 px-4 py-3 text-sm text-fg">
+                <Info aria-hidden="true" size={17} className="mt-0.5 shrink-0 text-gold" />
+                {t("gallery.demoNote")}
+              </p>
+            )}
+            <ul className="mt-10 grid max-w-5xl gap-8 sm:grid-cols-2">
+              {items.map((item) => {
+                const title = localize(item.title, lang);
+                return (
+                  <li key={item.id}>
+                    <figure className="flex flex-col gap-3">
+                      <BeforeAfterSlider
+                        before={assetUrl(item.beforeImage)}
+                        after={assetUrl(item.afterImage)}
+                        beforeLabel={t("gallery.before")}
+                        afterLabel={t("gallery.after")}
+                        label={t("gallery.sliderLabel", { title })}
+                        hint={t("gallery.sliderHint")}
+                      />
+                      <figcaption className="flex flex-col gap-1">
+                        <span className="flex flex-wrap items-center gap-2">
+                          <span className="font-display font-semibold text-fg">{title}</span>
+                          {item.demo && (
+                            <span className="rounded-full border border-gold/50 px-2.5 py-0.5 text-xs font-medium text-gold">
+                              {t("gallery.demoBadge")}
+                            </span>
+                          )}
+                        </span>
+                        {item.description && (
+                          <span className="text-sm text-fg-muted">{localize(item.description, lang)}</span>
+                        )}
+                      </figcaption>
+                    </figure>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
         )}
       </Container>
     </section>
