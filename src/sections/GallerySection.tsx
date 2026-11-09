@@ -1,12 +1,14 @@
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Info } from "lucide-react";
 import { BeforeAfterSlider } from "@/components/gallery/BeforeAfterSlider";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useLocale } from "@/app/providers/LocaleProvider";
-import { getPublishedGallery } from "@/config";
+import { getEnabledServices, getPublishedGallery } from "@/config";
 import type { GalleryItem } from "@/config/schema";
 import { assetUrl, localize } from "@/lib/locale";
+import { cn } from "@/lib/cn";
 
 /**
  * Before/after gallery: comparison sliders, or a designed empty state.
@@ -15,6 +17,19 @@ import { assetUrl, localize } from "@/lib/locale";
 export function GallerySection({ items = getPublishedGallery() }: { items?: GalleryItem[] }) {
   const { t } = useTranslation();
   const { lang } = useLocale();
+  const [filter, setFilter] = useState<string>("all");
+
+  // One chip per enabled service that has gallery items, in service order.
+  const categories = useMemo(
+    () => getEnabledServices().filter((s) => items.some((i) => i.serviceId === s.id)),
+    [items],
+  );
+  const visible = filter === "all" ? items : items.filter((i) => i.serviceId === filter);
+  const chip = (active: boolean) =>
+    cn(
+      "min-h-11 rounded-full border px-4 text-sm font-medium transition-colors",
+      active ? "border-gold bg-gold text-bg" : "border-line text-fg-muted hover:border-gold/60 hover:text-fg",
+    );
 
   return (
     <section id="gallery" aria-labelledby="gallery-title" className="bg-bg-2 py-20 sm:py-28">
@@ -51,8 +66,26 @@ export function GallerySection({ items = getPublishedGallery() }: { items?: Gall
                 {t("gallery.demoNote")}
               </p>
             )}
-            <ul className="mt-10 grid max-w-5xl gap-8 sm:grid-cols-2">
-              {items.map((item) => {
+            {categories.length > 1 && (
+              <div role="group" aria-label={t("gallery.filterLabel")} className="mt-8 flex flex-wrap gap-2">
+                <button type="button" aria-pressed={filter === "all"} onClick={() => setFilter("all")} className={chip(filter === "all")}>
+                  {t("gallery.filterAll")}
+                </button>
+                {categories.map((s) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    aria-pressed={filter === s.id}
+                    onClick={() => setFilter(s.id)}
+                    className={chip(filter === s.id)}
+                  >
+                    {localize(s.title, lang)}
+                  </button>
+                ))}
+              </div>
+            )}
+            <ul className="mt-8 grid max-w-5xl gap-8 sm:grid-cols-2">
+              {visible.map((item) => {
                 const title = localize(item.title, lang);
                 return (
                   <li key={item.id}>

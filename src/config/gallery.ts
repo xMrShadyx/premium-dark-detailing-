@@ -4,7 +4,8 @@ import type { GalleryItem } from "./schema";
  * Before/after gallery. Real results must be real photographs of the business's
  * own work (same vehicle, comparable angle and framing), never stock (SRS §5.4).
  *
- * The two entries below are DEMO material: the "before" haze was added digitally.
+ * The entries below are DEMO material: headlight "before" haze was added digitally;
+ * seat "after" stains were removed digitally from photos of real stains.
  * `demo: true` makes the site label them as a simulation. Replace them with real
  * before/after photos and remove `demo` once available.
  */
@@ -28,5 +29,25 @@ export const galleryItems = [
     demo: true,
     published: true,
     order: 2,
+  },
+  {
+    id: "interior-demo-1",
+    serviceId: "interior-cleaning",
+    beforeImage: "/images/gallery/interior-demo-1-before.webp",
+    afterImage: "/images/gallery/interior-demo-1-after.webp",
+    title: { bg: "Пране на задна седалка", en: "Rear seat cleaning" },
+    demo: true,
+    published: true,
+    order: 3,
+  },
+  {
+    id: "interior-demo-2",
+    serviceId: "interior-cleaning",
+    beforeImage: "/images/gallery/interior-demo-2-before.webp",
+    afterImage: "/images/gallery/interior-demo-2-after.webp",
+    title: { bg: "Пране на предна седалка", en: "Front seat cleaning" },
+    demo: true,
+    published: true,
+    order: 4,
   },
 ] satisfies GalleryItem[];

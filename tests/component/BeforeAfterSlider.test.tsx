@@ -25,3 +25,18 @@ describe("BeforeAfterSlider", () => {
     expect(screen.getByText("След")).toBeInTheDocument();
   });
 });
+
+import { GallerySection } from "@/sections/GallerySection";
+import { renderWithProviders } from "../test-utils";
+
+describe("GallerySection filter", () => {
+  it("filters items by service", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<GallerySection />);
+    const total = screen.getAllByRole("slider").length;
+    await user.click(screen.getByRole("button", { name: "Пране на интериор" }));
+    const filtered = screen.getAllByRole("slider").length;
+    expect(filtered).toBeLessThan(total);
+    expect(screen.getByRole("button", { name: "Пране на интериор" })).toHaveAttribute("aria-pressed", "true");
+  });
+});

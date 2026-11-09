@@ -128,8 +128,10 @@
     "before": "Before",
     "after": "After",
     "demoBadge": "Illustrative simulation",
-    "demoNote": "These examples are simulated: the headlight haze was added digitally to photos of new cars to show the effect of the service. They are not results from real jobs.",
+    "demoNote": "These examples are simulated: the “before” or “after” state was edited digitally to show the effect of the services. They are not results from real jobs.",
     "sliderLabel": "Before and after comparison: {{title}}",
-    "sliderHint": "Use the left and right arrow keys"
+    "sliderHint": "Use the left and right arrow keys",
+    "filterLabel": "Filter by service",
+    "filterAll": "All"
   }
 }
