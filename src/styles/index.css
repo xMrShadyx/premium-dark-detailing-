@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Premium Dark design tokens (SRS §3.2, §3.3)
+   Usage: bg-bg, bg-bg-2, bg-surface, text-fg, text-fg-muted,
+          border-line, text-gold, bg-gold, font-display, font-sans …
+   ------------------------------------------------------------------ */
+@theme {
+  --color-bg: #0b0b0d;
+  --color-bg-2: #141417;
+  --color-surface: #1a1a1e;
+  --color-surface-hover: #242429;
+  --color-gold: #c9a45c;
+  --color-gold-hover: #d8b775;
+  --color-fg: #f5f5f5;
+  --color-fg-muted: #b8b8b8;
+  --color-line: #343438;
+  --color-error: #ef6b6b;
+  --color-success: #69b58c;
+
+  --font-display: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Fluid type scale — desktop targets from SRS §3.3 */
+  --text-hero: clamp(2.5rem, 1.55rem + 4.2vw, 4.5rem);
+  --text-hero--line-height: 1.04;
+  --text-section: clamp(1.875rem, 1.45rem + 1.8vw, 2.75rem);
+  --text-section--line-height: 1.12;
+  --text-card: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+  --text-card--line-height: 1.25;
+
+  --breakpoint-xs: 22.5rem;
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-bg font-sans text-base leading-relaxed text-fg antialiased;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight text-balance;
+  }
+
+  section[id],
+  [data-anchor] {
+    scroll-margin-top: 5rem;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-gold) 35%, transparent);
+    color: var(--color-fg);
+  }
+}
+
+@layer components {
+  /* Subtle entrance for above-the-fold hero content. CSS only, no JS delay. */
+  .animate-rise {
+    animation: rise 0.8s var(--ease-premium) both;
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-rise {
+      animation: none;
+    }
+  }
+}

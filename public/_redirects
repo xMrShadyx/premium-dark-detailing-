@@ -1,0 +1,4 @@
+# Netlify-style SPA fallback (adapt for your host). Replaced by prerendered pages in Phase 5.
+/bg/*   /index.html   200
+/en/*   /index.html   200
+/       /index.html   200

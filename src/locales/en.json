@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "title": "Car Interior Deep Cleaning and Headlight Restoration",
+    "description": "Professional car interior deep cleaning and headlight restoration. Send an inquiry online or via Viber."
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "mainNavigation": "Main navigation",
+    "mobileNavigation": "Mobile navigation",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "languageSwitcher": "Language selection",
+    "contactShortcut": "Go to contact",
+    "footerNavigation": "Footer navigation"
+  },
+  "languages": {
+    "bg": "Български",
+    "en": "English"
+  },
+  "navigation": {
+    "home": "Home",
+    "services": "Services",
+    "pricing": "Pricing",
+    "gallery": "Gallery",
+    "about": "About",
+    "contact": "Contact",
+    "cta": "Inquiry"
+  },
+  "hero": {
+    "eyebrow": "PROFESSIONAL AUTOMOTIVE CARE",
+    "title": "Every detail matters.",
+    "description": "Professional car interior deep cleaning and headlight restoration.",
+    "primaryButton": "Send an Inquiry",
+    "secondaryButton": "Our Services"
+  },
+  "services": {
+    "eyebrow": "Services",
+    "title": "What we do",
+    "subtitle": "Two specialised services, carried out with care and precision.",
+    "included": "What's included",
+    "inquire": "Ask about this service",
+    "price": "Price",
+    "duration": "Duration"
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Indicative prices",
+    "subtitle": "Contact us for an exact quote based on your vehicle.",
+    "service": "Service",
+    "price": "Price",
+    "duration": "Duration",
+    "onRequest": "Price on request",
+    "from": "From {{price}}"
+  },
+  "duration": {
+    "minutes": "{{value}} min",
+    "hours": "{{value}} h",
+    "hoursMinutes": "{{hours}} h {{minutes}} min"
+  },
+  "contact": {
+    "eyebrow": "Contact",
+    "title": "Send an inquiry",
+    "subtitle": "Tell us about your vehicle and the service you need, and we will get back to you.",
+    "phone": "Phone",
+    "email": "Email",
+    "viber": "Viber",
+    "address": "Address",
+    "hours": "Working hours"
+  },
+  "footer": {
+    "tagline": "Car interior deep cleaning and headlight restoration.",
+    "copyright": "© {{year}}"
+  },
+  "form": {
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "service": "Service",
+    "servicePlaceholder": "Choose a service",
+    "vehicle": "Make and model",
+    "vehiclePlaceholder": "e.g. Škoda Octavia",
+    "date": "Preferred date",
+    "message": "Message",
+    "messagePlaceholder": "Describe the condition of the vehicle and what you would like done.",
+    "optional": "optional",
+    "consent": "I agree that my details are used only to respond to this inquiry.",
+    "submit": "Send inquiry",
+    "submitting": "Sending…",
+    "copy": "Copy inquiry",
+    "viber": "Open Viber",
+    "honeypot": "Leave this field empty",
+    "demoTitle": "Demo mode.",
+    "demoText": "Online sending is not set up yet, so the inquiry will not be sent. You can copy it and send it to us yourself.",
+    "manualCopyLabel": "Your browser did not allow copying. Select the text and copy it manually:"
+  },
+  "validation": {
+    "name": "Enter a name between 2 and 100 characters.",
+    "phone": "Enter a valid phone number, e.g. +359 88 123 4567.",
+    "email": "Enter a valid email address or leave the field empty.",
+    "service": "Choose a service.",
+    "vehicle": "Make and model must be at most 100 characters.",
+    "date": "Enter a valid date.",
+    "message": "The message must be between 10 and 2000 characters.",
+    "consent": "Your consent is needed so we can reply to your inquiry."
+  },
+  "status": {
+    "fixErrors": "Please correct the highlighted fields.",
+    "accepted": "Your inquiry has been received. We will get back to you as soon as possible.",
+    "demo": "The inquiry was not sent because the site is in demo mode. Use “Copy inquiry” instead.",
+    "errorNetwork": "Could not reach the server. Check your connection and try again — your details are kept.",
+    "errorServer": "The inquiry could not be sent. Please try again later — your details are kept.",
+    "copied": "Inquiry copied. Paste it into a message to us.",
+    "copyManual": "Copy the text below manually.",
+    "viberOpened": "Inquiry copied. Paste it into the Viber chat and send it. If Viber does not open, message us at {{number}}.",
+    "viberOpenedManual": "Copy the text below, paste it into Viber and send it. If Viber does not open, message us at {{number}}."
+  },
+  "inquiry": {
+    "messageHeader": "Inquiry from the website"
+  },
+  "gallery": {
+    "eyebrow": "Gallery",
+    "title": "Before and after",
+    "subtitle": "Results from real work.",
+    "emptyTitle": "Coming soon",
+    "emptyText": "We will publish before-and-after photos of real vehicles once they are ready.",
+    "before": "Before",
+    "after": "After"
+  }
+}

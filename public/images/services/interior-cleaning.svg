@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <radialGradient id="bg" cx="0.85" cy="0.1" r="1">
+      <stop offset="0" stop-color="#29241a"/>
+      <stop offset="0.5" stop-color="#151518"/>
+      <stop offset="1" stop-color="#0f0f12"/>
+    </radialGradient>
+    <linearGradient id="fabric" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2c2c33"/>
+      <stop offset="1" stop-color="#18181c"/>
+    </linearGradient>
+    <linearGradient id="fabric2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2a30"/>
+      <stop offset="1" stop-color="#151519"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#fff" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="shadow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#000" stop-opacity="0.7"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="seat">
+      <path d="M455 95 C500 90 520 110 515 140 L540 300 C545 330 525 345 500 345 L470 345 C445 345 435 330 432 310 L410 150 C405 115 425 98 455 95 Z"/>
+      <path d="M250 300 C250 285 262 278 280 278 L500 285 C525 286 540 300 540 320 L540 340 C540 355 528 362 512 362 L275 362 C258 362 250 352 250 338 Z"/>
+    </clipPath>
+  </defs>
+
+  <rect width="800" height="450" fill="url(#bg)"/>
+
+  <!-- carpet -->
+  <path d="M0 400 H800 V450 H0 Z" fill="#111114"/>
+  <g stroke="#1d1d22" stroke-width="2">
+    <path d="M0 412 H800"/><path d="M0 426 H800"/><path d="M0 440 H800"/>
+  </g>
+  <ellipse cx="410" cy="402" rx="230" ry="14" fill="url(#shadow)"/>
+
+  <!-- rails -->
+  <rect x="280" y="380" width="250" height="10" rx="3" fill="#1f1f24" stroke="#33333a"/>
+  <path d="M300 362 L310 382 M500 362 L490 382" stroke="#33333a" stroke-width="8"/>
+
+  <!-- headrest -->
+  <path d="M455 88 L452 70 M490 86 L490 68" stroke="#4a4a52" stroke-width="5" stroke-linecap="round"/>
+  <rect x="428" y="30" width="86" height="44" rx="20" fill="url(#fabric)" stroke="#45454d" stroke-width="2"/>
+
+  <!-- backrest + cushion -->
+  <path d="M455 95 C500 90 520 110 515 140 L540 300 C545 330 525 345 500 345 L470 345 C445 345 435 330 432 310 L410 150 C405 115 425 98 455 95 Z" fill="url(#fabric)" stroke="#45454d" stroke-width="2"/>
+  <path d="M250 300 C250 285 262 278 280 278 L500 285 C525 286 540 300 540 320 L540 340 C540 355 528 362 512 362 L275 362 C258 362 250 352 250 338 Z" fill="url(#fabric2)" stroke="#45454d" stroke-width="2"/>
+
+  <!-- stitching -->
+  <g fill="none" stroke="#c9a45c" stroke-opacity="0.7" stroke-width="1.6" stroke-dasharray="5 5">
+    <path d="M436 132 L460 320"/>
+    <path d="M490 118 L516 322"/>
+    <path d="M312 284 L312 356"/>
+    <path d="M470 288 L470 358"/>
+  </g>
+  <g fill="none" stroke="#3a3a41" stroke-width="1.5">
+    <path d="M440 170 L508 162"/><path d="M445 210 L514 202"/><path d="M450 250 L520 242"/><path d="M455 290 L526 282"/>
+    <path d="M330 300 L455 304"/><path d="M330 322 L455 326"/>
+  </g>
+
+  <!-- fresh sheen across the clean seat -->
+  <g clip-path="url(#seat)">
+    <rect x="300" y="-60" width="90" height="560" fill="url(#sheen)" transform="rotate(24 345 220)"/>
+  </g>
+
+  <!-- sparkles -->
+  <g fill="#d8b775">
+    <path d="M600 140 l5 15 15 5 -15 5 -5 15 -5 -15 -15 -5 15 -5 Z"/>
+    <path d="M640 210 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 Z" opacity="0.7"/>
+    <path d="M230 240 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3 Z" opacity="0.5"/>
+  </g>
+  <g fill="none" stroke="#c9a45c" stroke-opacity="0.25">
+    <circle cx="610" cy="300" r="10"/><circle cx="635" cy="275" r="6"/><circle cx="590" cy="265" r="4"/>
+  </g>
+</svg>
