@@ -25,7 +25,7 @@ type Feedback =
 
 const inputClass =
   "w-full rounded-xl border bg-bg px-4 py-3 text-fg placeholder:text-fg-muted/60 " +
-  "transition-colors focus:border-gold focus:outline-none";
+  "transition-colors focus:border-accent focus:outline-none";
 
 function todayIso(): string {
   const d = new Date();
@@ -171,9 +171,9 @@ export function InquiryForm() {
       {demo && (
         <p
           id={`${uid}-demo`}
-          className="flex items-start gap-2.5 rounded-xl border border-gold/40 bg-gold/5 px-4 py-3 text-sm text-fg"
+          className="flex items-start gap-2.5 rounded-xl border border-accent/40 bg-accent/5 px-4 py-3 text-sm text-fg"
         >
-          <Info aria-hidden="true" size={17} className="mt-0.5 shrink-0 text-gold" />
+          <Info aria-hidden="true" size={17} className="mt-0.5 shrink-0 text-accent" />
           <span>
             <strong className="font-semibold">{t("form.demoTitle")}</strong> {t("form.demoText")}
           </span>
@@ -310,7 +310,7 @@ export function InquiryForm() {
             type="checkbox"
             checked={values.consent}
             onChange={(e) => set("consent", e.target.checked)}
-            className="mt-1 h-5 w-5 shrink-0 accent-gold"
+            className="mt-1 h-5 w-5 shrink-0 accent-accent"
           />
           <label htmlFor={id("consent")} className="text-sm text-fg-muted">
             {t("form.consent")}

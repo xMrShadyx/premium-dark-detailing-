@@ -11,7 +11,7 @@ describe("Header", () => {
     const hrefs = within(nav)
       .getAllByRole("link")
       .map((a) => a.getAttribute("href"));
-    expect(hrefs).toEqual(["#services", "#pricing", "#gallery", "#contact"]);
+    expect(hrefs).toEqual(["#home", "#services", "#gallery", "#about", "#contact"]);
   });
 
   it("renders the logo as a link home, named after the business", () => {
@@ -41,7 +41,7 @@ describe("Header", () => {
     renderWithProviders(<Header />);
     await user.click(screen.getByRole("button", { name: "Отвори менюто" }));
     const mobileNav = screen.getByRole("navigation", { name: "Мобилна навигация" });
-    await user.click(within(mobileNav).getByRole("link", { name: "Цени" }));
+    await user.click(within(mobileNav).getByRole("link", { name: "Резултати" }));
     expect(screen.getByRole("button", { name: "Отвори менюто" })).toHaveAttribute(
       "aria-expanded",
       "false",

@@ -12,17 +12,16 @@ export function ServicesSection({ services = getEnabledServices() }: Props) {
   if (services.length === 0) return null;
 
   return (
-    <section id="services" aria-labelledby="services-title" className="bg-bg py-20 sm:py-28">
+    <section id="services" aria-labelledby="services-title" className="bg-bg py-16 sm:py-20">
       <Container>
         <SectionHeading
           id="services-title"
           eyebrow={t("services.eyebrow")}
           title={t("services.title")}
-          subtitle={t("services.subtitle")}
         />
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:gap-8">
-          {services.map((service, index) => (
-            <ServiceCard key={service.id} service={service} index={index} />
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
+          {services.map((service) => (
+            <ServiceCard key={service.id} service={service} />
           ))}
         </div>
       </Container>

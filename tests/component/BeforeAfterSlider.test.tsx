@@ -29,14 +29,16 @@ describe("BeforeAfterSlider", () => {
 import { GallerySection } from "@/sections/GallerySection";
 import { renderWithProviders } from "../test-utils";
 
-describe("GallerySection filter", () => {
-  it("filters items by service", async () => {
+describe("GallerySection carousel", () => {
+  it("shows every comparison with one page dot per view (two per view on wide screens)", async () => {
     const user = userEvent.setup();
     renderWithProviders(<GallerySection />);
-    const total = screen.getAllByRole("slider").length;
-    await user.click(screen.getByRole("button", { name: "Пране на интериор" }));
-    const filtered = screen.getAllByRole("slider").length;
-    expect(filtered).toBeLessThan(total);
-    expect(screen.getByRole("button", { name: "Пране на интериор" })).toHaveAttribute("aria-pressed", "true");
+    const sliders = screen.getAllByRole("slider").length;
+    const dots = screen.getAllByRole("button", { name: /Покажи сравнения/ });
+    const perView = window.matchMedia("(min-width: 40rem)").matches ? 2 : 1;
+    expect(dots).toHaveLength(Math.ceil(sliders / perView));
+    expect(dots[0]).toHaveAttribute("aria-current", "true");
+    await user.click(dots[1]!);
+    expect(dots[1]).toHaveAttribute("aria-current", "true");
   });
 });

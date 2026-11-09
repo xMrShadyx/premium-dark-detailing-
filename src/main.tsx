@@ -2,6 +2,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "@fontsource-variable/manrope";
 import "@fontsource-variable/inter";
+import "@fontsource/exo-2/700-italic.css";
+import "@fontsource/exo-2/800-italic.css";
 import "@/styles/index.css";
 
 import { App } from "@/app/App";

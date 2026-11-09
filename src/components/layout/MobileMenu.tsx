@@ -1,7 +1,9 @@
 import { useEffect, useRef, type RefObject } from "react";
 import { useTranslation } from "react-i18next";
 import { Navigation } from "./Navigation";
-import { ButtonLink } from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
+import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
+import { useInquiryIntent } from "@/features/inquiries/InquiryIntentContext";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { cn } from "@/lib/cn";
 
@@ -18,6 +20,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1
 export function MobileMenu({ id, open, onClose, triggerRef }: Props) {
   const { t } = useTranslation();
   const panelRef = useRef<HTMLDivElement>(null);
+  const { openBooking } = useInquiryIntent();
   useLockBodyScroll(open);
 
   useEffect(() => {
@@ -66,9 +69,16 @@ export function MobileMenu({ id, open, onClose, triggerRef }: Props) {
     >
       <nav aria-label={t("a11y.mobileNavigation")} className="px-4 pt-4 pb-10 sm:px-6">
         <Navigation variant="mobile" onNavigate={onClose} />
-        <ButtonLink href="#contact" onClick={onClose} className="mt-8 w-full">
+        <Button
+          onClick={() => {
+            onClose();
+            openBooking();
+          }}
+          className="mt-8 w-full"
+        >
           {t("hero.primaryButton")}
-        </ButtonLink>
+        </Button>
+        <LanguageSwitcher className="mt-6 sm:hidden" />
       </nav>
     </div>
   );

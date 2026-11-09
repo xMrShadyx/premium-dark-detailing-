@@ -9,7 +9,7 @@ import { S } from "./strings";
 import { fmt, inputClass, serviceDuration, serviceTitle, toLocalInputs } from "./ui";
 
 const STATUS_STYLE: Record<InquiryStatus, string> = {
-  new: "bg-gold text-bg",
+  new: "bg-accent text-bg",
   scheduled: "bg-success/15 text-success",
   done: "bg-surface-hover text-fg-muted",
   rejected: "bg-error/10 text-error",
@@ -126,12 +126,12 @@ function InquiryCard({ row, sb, onChanged }: { row: InquiryRow; sb: SupabaseClie
 
       <div className="mt-4 flex flex-wrap gap-2">
         {tel && (
-          <a href={tel} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-sm hover:border-gold/60">
+          <a href={tel} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-sm hover:border-accent/60">
             <Phone aria-hidden="true" size={16} /> {S.call}
           </a>
         )}
         {viber && (
-          <a href={viber} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-sm hover:border-gold/60">
+          <a href={viber} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-sm hover:border-accent/60">
             <MessageCircle aria-hidden="true" size={16} /> {S.viber}
           </a>
         )}
@@ -230,7 +230,7 @@ export function InquiriesPanel({
               onClick={() => setFilter(f)}
               className={cn(
                 "min-h-11 rounded-full border px-4 text-sm font-medium transition-colors",
-                filter === f ? "border-gold bg-gold text-bg" : "border-line text-fg-muted hover:text-fg",
+                filter === f ? "border-accent bg-accent text-bg" : "border-line text-fg-muted hover:text-fg",
               )}
             >
               {f === "all" ? S.filterAll : S.status[f]} <span className="tabular-nums opacity-80">({counts[f]})</span>

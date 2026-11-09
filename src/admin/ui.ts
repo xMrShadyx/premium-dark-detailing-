@@ -1,7 +1,7 @@
 import { getServiceById } from "@/config";
 
 export const inputClass =
-  "w-full rounded-xl border border-line bg-bg px-3.5 py-2.5 text-fg font-normal transition-colors focus:border-gold focus:outline-none";
+  "w-full rounded-xl border border-line bg-bg px-3.5 py-2.5 text-fg font-normal transition-colors focus:border-accent focus:outline-none";
 
 const dateTime = new Intl.DateTimeFormat("bg-BG", { dateStyle: "medium", timeStyle: "short" });
 const dateOnly = new Intl.DateTimeFormat("bg-BG", { dateStyle: "medium" });

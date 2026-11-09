@@ -96,7 +96,7 @@ function UploadForm({ sb, nextOrder, onDone }: { sb: SupabaseClient; nextOrder: 
       </label>
       <p className="text-xs text-fg-muted sm:col-span-2">{S.photoHint}</p>
       <label className="flex items-center gap-3 text-sm sm:col-span-2">
-        <input type="checkbox" checked={publish} onChange={(e) => setPublish(e.target.checked)} className="h-5 w-5 accent-gold" />
+        <input type="checkbox" checked={publish} onChange={(e) => setPublish(e.target.checked)} className="h-5 w-5 accent-accent" />
         {S.publishNow}
       </label>
       <div className="flex flex-wrap items-center gap-3 sm:col-span-2">

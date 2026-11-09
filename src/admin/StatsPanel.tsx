@@ -99,7 +99,7 @@ export function StatsPanel({ inquiries }: { inquiries: InquiryRow[] | null }) {
       </div>
 
       {stats.unpriced > 0 && (
-        <p role="note" className="rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm">
+        <p role="note" className="rounded-xl border border-accent/40 bg-accent/10 px-4 py-3 text-sm">
           {stats.unpriced === 1 ? "1 завършен запис няма" : `${stats.unpriced} завършени записа нямат`} въведена цена,
           затова приходите може да са по-високи. Отворете записа в календара и попълнете „Цена“.
         </p>
@@ -159,7 +159,7 @@ export function StatsPanel({ inquiries }: { inquiries: InquiryRow[] | null }) {
                     <div className="flex items-center gap-2">
                       <span
                         aria-hidden="true"
-                        className="h-3 rounded-r bg-gold"
+                        className="h-3 rounded-r bg-accent"
                         style={{ width: maxRevenue ? `${(m.revenue / maxRevenue) * 70}%` : 0, minWidth: m.revenue ? 4 : 0 }}
                       />
                       <span className="whitespace-nowrap font-semibold tabular-nums">{money(m.revenue)}</span>

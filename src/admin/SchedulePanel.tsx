@@ -76,7 +76,7 @@ export function SchedulePanel({ inquiries }: { inquiries: InquiryRow[] | null })
           return (
             <div key={key} className="flex flex-col gap-2">
               <h3 className="text-sm font-semibold tracking-wide text-fg-muted uppercase">
-                {label && <span className="mr-2 text-gold">{label} ·</span>}
+                {label && <span className="mr-2 text-accent">{label} ·</span>}
                 {fmt.day(slots[0]!.start)}
               </h3>
               <ul className="flex flex-col gap-2">
@@ -91,7 +91,7 @@ export function SchedulePanel({ inquiries }: { inquiries: InquiryRow[] | null })
                       )}
                     >
                       <p className="flex items-center gap-1.5 font-semibold tabular-nums">
-                        <Clock aria-hidden="true" size={15} className="text-gold" />
+                        <Clock aria-hidden="true" size={15} className="text-accent" />
                         {fmt.time(start)}–{fmt.time(end)}
                       </p>
                       <div className="min-w-0">
@@ -105,7 +105,7 @@ export function SchedulePanel({ inquiries }: { inquiries: InquiryRow[] | null })
                         )}
                       </div>
                       {tel && (
-                        <a href={tel} className="inline-flex min-h-11 items-center gap-2 self-start rounded-full border border-line px-4 text-sm tabular-nums hover:border-gold/60">
+                        <a href={tel} className="inline-flex min-h-11 items-center gap-2 self-start rounded-full border border-line px-4 text-sm tabular-nums hover:border-accent/60">
                           <Phone aria-hidden="true" size={15} /> {row.phone}
                         </a>
                       )}

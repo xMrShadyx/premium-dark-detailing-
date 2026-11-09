@@ -1,14 +1,13 @@
 import { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Menu, MessageSquareText, X } from "lucide-react";
+import { CalendarDays, Menu, X } from "lucide-react";
 import { Navigation } from "./Navigation";
 import { MobileMenu } from "./MobileMenu";
 import { Container } from "@/components/ui/Container";
-import { ButtonLink } from "@/components/ui/Button";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { hasBusinessName, siteConfig } from "@/config";
 import { useScrolled } from "@/hooks/useScrolled";
+import { useInquiryIntent } from "@/features/inquiries/InquiryIntentContext";
 import { cn } from "@/lib/cn";
 import { assetUrl } from "@/lib/locale";
 
@@ -21,6 +20,7 @@ export function Header() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
   const showBrand = hasBusinessName();
+  const { openBooking } = useInquiryIntent();
 
   return (
     <>
@@ -29,19 +29,19 @@ export function Header() {
       className={cn(
         "fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-300",
         scrolled || menuOpen
-          ? "border-line/70 bg-bg/90 backdrop-blur-md"
+          ? "border-accent/15 bg-bg/90 backdrop-blur-md"
           : // Over the always-dark hero the header uses the dark palette in both themes.
             "theme-dark border-transparent bg-transparent",
       )}
     >
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-4 focus:z-50 focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-bg"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-4 focus:z-50 focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-bg"
       >
         {t("a11y.skipToContent")}
       </a>
 
-      <Container className="flex h-16 items-center gap-8 lg:h-20">
+      <Container className="flex h-16 items-center gap-8 lg:h-24">
         {/* Brand renders only when configured — no empty logo slot (SRS §1.2). */}
         {showBrand && (
           <a
@@ -53,9 +53,9 @@ export function Header() {
               <img
                 src={assetUrl(siteConfig.logo)}
                 alt={siteConfig.businessName}
-                width={480}
-                height={142}
-                className="h-9 w-auto rounded-md bg-black lg:h-11"
+                width={520}
+                height={229}
+                className="h-12 w-auto mix-blend-screen lg:h-16"
               />
             ) : (
               siteConfig.businessName
@@ -63,25 +63,21 @@ export function Header() {
           </a>
         )}
 
-        <nav aria-label={t("a11y.mainNavigation")} className="hidden lg:block">
+        <nav aria-label={t("a11y.mainNavigation")} className="ml-auto hidden lg:block">
           <Navigation variant="desktop" />
         </nav>
 
-        <div className="ml-auto flex items-center gap-2 sm:gap-3">
-          <LanguageSwitcher />
-          <ThemeToggle />
+        <div className="ml-auto flex items-center gap-2 sm:gap-3 lg:ml-6">
+          <LanguageSwitcher className="max-sm:hidden" />
 
-          <ButtonLink href="#contact" size="sm" className="max-md:hidden">
-            {t("navigation.cta")}
-          </ButtonLink>
-
-          <a
-            href="#contact"
-            aria-label={t("a11y.contactShortcut")}
-            className="flex h-11 w-11 items-center justify-center rounded-full text-gold transition-colors hover:bg-surface md:hidden"
+          <button
+            type="button"
+            onClick={() => openBooking()}
+            aria-label={t("navigation.cta")}
+            className="flex h-11 w-11 items-center justify-center rounded-full text-accent transition-colors hover:bg-surface lg:hidden"
           >
-            <MessageSquareText aria-hidden="true" size={20} />
-          </a>
+            <CalendarDays aria-hidden="true" size={21} />
+          </button>
 
           <button
             ref={triggerRef}

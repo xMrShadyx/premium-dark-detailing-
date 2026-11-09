@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { ChevronsLeftRight, ImageOff } from "lucide-react";
+import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 type Props = {
@@ -59,7 +59,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel, labe
 
   if (failed) {
     return (
-      <div className={cn("flex aspect-[3/4] items-center justify-center rounded-2xl bg-bg-2 text-fg-muted", className)}>
+      <div className={cn("flex aspect-[2/1] items-center justify-center rounded-2xl bg-bg-2 text-fg-muted", className)}>
         <ImageOff aria-hidden="true" size={28} />
       </div>
     );
@@ -75,7 +75,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel, labe
       onPointerUp={stop}
       onPointerCancel={stop}
       className={cn(
-        "relative aspect-[3/4] cursor-ew-resize touch-pan-y overflow-hidden rounded-2xl bg-bg-2 select-none",
+        "relative aspect-[2/1] cursor-ew-resize touch-pan-y overflow-hidden rounded-2xl border border-line bg-bg-2 select-none",
         className,
       )}
     >
@@ -99,16 +99,16 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel, labe
         className="absolute inset-0 h-full w-full object-cover"
       />
 
-      <span className="pointer-events-none absolute top-3 left-3 rounded-full bg-bg/85 px-3 py-1 text-xs font-semibold tracking-wider text-fg uppercase">
+      <span className="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-white/15 bg-black/70 px-3 py-1 text-sm font-semibold text-fg">
         {beforeLabel}
       </span>
-      <span className="pointer-events-none absolute top-3 right-3 rounded-full bg-gold px-3 py-1 text-xs font-semibold tracking-wider text-bg uppercase">
+      <span className="pointer-events-none absolute right-3 bottom-3 rounded-lg bg-gradient-to-b from-[#3a9bff] to-[#0b5fd1] px-3 py-1 text-sm font-semibold text-white shadow-[0_0_12px] shadow-accent/70">
         {afterLabel}
       </span>
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-white/90 shadow-[0_0_12px_rgba(0,0,0,0.45)]"
+        className="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-white shadow-[0_0_10px_rgba(255,255,255,0.6)]"
         style={{ left: `${position}%` }}
       />
       <div
@@ -121,10 +121,11 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel, labe
         aria-valuetext={`${beforeLabel} ${round}%, ${afterLabel} ${100 - round}%`}
         title={hint}
         onKeyDown={onKeyDown}
-        className="absolute top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-black/55 text-white backdrop-blur-sm"
+        className="absolute top-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-accent shadow-[0_0_14px] shadow-accent"
         style={{ left: `${position}%` }}
       >
-        <ChevronsLeftRight aria-hidden="true" size={22} />
+        <ChevronLeft aria-hidden="true" size={15} strokeWidth={3} className="-mr-1" />
+        <ChevronRight aria-hidden="true" size={15} strokeWidth={3} className="-ml-1" />
       </div>
     </div>
   );

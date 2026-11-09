@@ -33,10 +33,11 @@ describe("translation resources", () => {
     }
   });
 
-  it("hero copy matches the SRS", () => {
-    expect(bgFlat["hero.title"]).toBe("Всеки детайл има значение.");
-    expect(enFlat["hero.title"]).toBe("Every detail matters.");
-    expect(bgFlat["hero.primaryButton"]).toBe("Изпрати запитване");
-    expect(enFlat["hero.secondaryButton"]).toBe("Our Services");
+  it("hero copy matches the brand mock-up", () => {
+    expect(bgFlat["hero.title"]).toBe("Върни блясъка.");
+    expect(bgFlat["hero.titleAccent"]).toBe("Усети разликата.");
+    expect(enFlat["hero.title"]).toBe("Bring back the shine.");
+    expect(bgFlat["hero.primaryButton"]).toBe("Запази час");
+    expect(enFlat["hero.secondaryButton"]).toBe("See results");
   });
 });

@@ -219,14 +219,14 @@ export function CalendarPanel({
               onDragLeave={() => setDragOver((d) => (d === day ? null : d))}
               onDrop={(e) => onDrop(e, day)}
               className={cn(
-                "relative flex flex-col items-start border-r border-line/60 px-1 pt-0.5 text-left transition-colors hover:bg-gold/10 focus-visible:z-30",
+                "relative flex flex-col items-start border-r border-line/60 px-1 pt-0.5 text-left transition-colors hover:bg-accent/10 focus-visible:z-30",
                 weekend && "bg-bg-2/70",
                 isClosed && "bg-[repeating-linear-gradient(135deg,color-mix(in_srgb,var(--color-error)_22%,transparent)_0_4px,transparent_4px_9px)]",
-                (dragOver === day || highlight === day) && "bg-gold/20 outline-2 -outline-offset-2 outline-gold",
+                (dragOver === day || highlight === day) && "bg-accent/20 outline-2 -outline-offset-2 outline-accent",
                 assigning && "cursor-copy",
               )}
             >
-              <span className={cn("text-[11px] leading-none tabular-nums", day === today ? "rounded bg-gold px-1 py-0.5 font-bold text-bg" : "text-fg-muted", weekend && day !== today && "text-fg")}>
+              <span className={cn("text-[11px] leading-none tabular-nums", day === today ? "rounded bg-accent px-1 py-0.5 font-bold text-bg" : "text-fg-muted", weekend && day !== today && "text-fg")}>
                 {String(n).padStart(2, "0")}
               </span>
               <span className={cn("text-[9px] leading-tight", weekend ? "font-semibold text-error" : "text-fg-muted/80")}>
@@ -282,9 +282,9 @@ export function CalendarPanel({
       {/* --- Unassigned requests ------------------------------------------- */}
       <div className="rounded-2xl border border-line bg-surface p-4">
         <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
-          <Inbox aria-hidden="true" size={18} className="text-gold" />
+          <Inbox aria-hidden="true" size={18} className="text-accent" />
           Неразпределени
-          <span className="rounded-full bg-gold px-2 py-0.5 text-xs font-semibold text-bg tabular-nums">{unassigned.length}</span>
+          <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-bg tabular-nums">{unassigned.length}</span>
         </h2>
         <p className="mt-1 text-sm text-fg-muted">
           Заявки от сайта, които още нямат час. Плъзнете карта върху ден или натиснете „Разпредели“ и изберете ден.
@@ -304,7 +304,7 @@ export function CalendarPanel({
                 }}
                 className={cn(
                   "flex w-64 shrink-0 cursor-grab flex-col gap-1 rounded-xl border bg-bg p-3 text-sm active:cursor-grabbing",
-                  assigning?.id === row.id ? "border-gold" : "border-line",
+                  assigning?.id === row.id ? "border-accent" : "border-line",
                 )}
               >
                 <p className="flex items-center gap-1.5 font-semibold">
@@ -317,7 +317,7 @@ export function CalendarPanel({
                 </p>
                 <p className="text-fg-muted tabular-nums">{row.phone}</p>
                 {row.preferred_date && (
-                  <p className="text-xs text-gold">
+                  <p className="text-xs text-accent">
                     Предпочита {new Date(`${row.preferred_date}T00:00:00`).toLocaleDateString("bg-BG", { day: "numeric", month: "long" })}
                   </p>
                 )}
@@ -339,7 +339,7 @@ export function CalendarPanel({
       </div>
 
       {assigning && (
-        <p role="status" className="sticky top-28 z-30 flex flex-wrap items-center gap-3 rounded-xl border border-gold bg-surface px-4 py-3 text-sm shadow-lg">
+        <p role="status" className="sticky top-28 z-30 flex flex-wrap items-center gap-3 rounded-xl border border-accent bg-surface px-4 py-3 text-sm shadow-lg">
           Изберете ден в календара за <strong>{assigning.name}</strong>
           {assigning.preferred_date && <span className="text-fg-muted">(желаната дата е маркирана)</span>}
           <Button size="sm" variant="ghost" className="ml-auto min-h-9" onClick={() => setAssigning(null)}>
@@ -414,7 +414,7 @@ export function CalendarPanel({
             }}
             className="flex min-h-11 w-full items-center gap-2.5 px-4 text-left text-sm hover:bg-surface-hover focus:bg-surface-hover focus:outline-none"
           >
-            <CalendarPlus aria-hidden="true" size={16} className="text-gold" /> Нов запис
+            <CalendarPlus aria-hidden="true" size={16} className="text-accent" /> Нов запис
           </button>
           <button
             type="button"

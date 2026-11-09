@@ -1,56 +1,33 @@
 import { useTranslation } from "react-i18next";
-import { ArrowRight } from "lucide-react";
-import { ButtonLink } from "@/components/ui/Button";
+import { CalendarDays, Clock, Play, ShieldCheck, Star } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { siteConfig } from "@/config";
+import { useInquiryIntent } from "@/features/inquiries/InquiryIntentContext";
 import { assetUrl, localize } from "@/lib/locale";
 
-/**
- * Abstract "polished surface" visual used until a real photograph is configured.
- * Pure CSS/SVG: no network request, no fabricated imagery, no LCP penalty.
- */
-function HeroBackdrop() {
-  return (
-    <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_85%_10%,#2a2620_0%,transparent_55%),radial-gradient(90%_70%_at_0%_100%,#17171b_0%,transparent_60%)]" />
-      {/* reflection streaks, like light on a freshly polished panel */}
-      <div className="absolute -top-1/4 right-[-10%] h-[150%] w-[55%] rotate-[18deg] bg-gradient-to-l from-transparent via-white/[0.035] to-transparent" />
-      <div className="absolute -top-1/4 right-[12%] h-[150%] w-[6%] rotate-[18deg] bg-gradient-to-l from-transparent via-gold/[0.07] to-transparent" />
-      <svg
-        className="absolute inset-x-0 bottom-0 h-[55%] w-full text-line opacity-60"
-        viewBox="0 0 1200 400"
-        preserveAspectRatio="none"
-        fill="none"
-      >
-        {Array.from({ length: 9 }, (_, i) => (
-          <path
-            key={i}
-            d={`M0 ${400 - i * 22} C 300 ${330 - i * 26}, 900 ${330 - i * 26}, 1200 ${400 - i * 22}`}
-            stroke="currentColor"
-            strokeWidth="1"
-            opacity={1 - i * 0.1}
-          />
-        ))}
-      </svg>
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent to-bg" />
-    </div>
-  );
-}
-
+/** Hero from the brand mock-up: copy on the left, glowing headlight photo on the right. */
 export function HeroSection() {
   const { t } = useTranslation();
   const { lang } = useLocale();
+  const { openBooking } = useInquiryIntent();
   const { image, imageAlt } = siteConfig.hero;
+
+  const badges = [
+    { icon: ShieldCheck, label: t("hero.badgeQuality") },
+    { icon: Clock, label: t("hero.badgeFast") },
+    { icon: Star, label: t("hero.badgeVisible") },
+  ];
 
   return (
     <section
       id="home"
       aria-labelledby="hero-title"
-      className="theme-dark relative isolate flex min-h-[88svh] bg-bg items-end overflow-hidden pt-28 pb-16 sm:items-center sm:pb-24 lg:min-h-[92svh]"
+      className="relative isolate overflow-hidden border-b border-accent/15 bg-bg pt-24 lg:pt-28"
     >
-      {image ? (
-        <>
+      {image && (
+        <div className="absolute inset-y-0 right-0 -z-10 w-full sm:w-[62%] lg:w-[55%]">
           {/* Likely LCP element: eager + high priority, never lazy (SRS §10). */}
           <img
             src={assetUrl(image)}
@@ -58,42 +35,45 @@ export function HeroSection() {
             fetchPriority="high"
             loading="eager"
             decoding="async"
-            className="absolute inset-0 -z-10 h-full w-full object-cover object-[72%_center]"
+            className="h-full w-full object-cover object-left"
           />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-bg via-bg/80 to-bg/30"
-          />
-        </>
-      ) : (
-        <div className="absolute inset-0 -z-10">
-          <HeroBackdrop />
+          {/* Blend the photo into the navy page on its left and bottom edges. */}
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-r from-bg via-bg/40 to-transparent" />
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-bg/80 via-transparent to-transparent" />
+          <div aria-hidden="true" className="absolute inset-0 bg-bg/60 sm:hidden" />
         </div>
       )}
 
-      <Container>
-        <div className="max-w-3xl animate-rise">
-          <p className="mb-6 flex items-center gap-3 text-xs font-semibold tracking-[0.24em] text-gold sm:text-sm">
-            <span aria-hidden="true" className="h-px w-10 bg-gold/70" />
+      <Container className="pb-12 sm:pb-16 lg:pb-20">
+        <div className="max-w-2xl animate-rise">
+          <p className="mb-5 text-xs font-semibold tracking-[0.45em] text-fg uppercase sm:text-sm">
             {t("hero.eyebrow")}
           </p>
-          <h1 id="hero-title" className="text-hero font-semibold text-fg">
+          <h1 id="hero-title" className="font-brand text-[clamp(2.4rem,1.4rem+3.6vw,4rem)] leading-[1.08] font-extrabold italic tracking-tight text-fg">
             {t("hero.title")}
+            <span className="block text-accent text-glow">{t("hero.titleAccent")}</span>
           </h1>
-          <p className="mt-6 max-w-xl text-lg text-fg-muted sm:text-xl">{t("hero.description")}</p>
-          <div className="mt-10 flex flex-col gap-3 xs:flex-row xs:flex-wrap">
-            <ButtonLink href="#contact" className="group">
+          <p className="mt-6 max-w-md text-lg text-fg/90">{t("hero.description")}</p>
+
+          <div className="mt-9 flex flex-wrap gap-4">
+            <Button onClick={() => openBooking()} className="min-w-44">
+              <CalendarDays aria-hidden="true" size={19} />
               {t("hero.primaryButton")}
-              <ArrowRight
-                aria-hidden="true"
-                size={18}
-                className="transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none"
-              />
-            </ButtonLink>
-            <ButtonLink href="#services" variant="secondary">
+            </Button>
+            <ButtonLink href="#gallery" variant="secondary" className="min-w-44">
+              <Play aria-hidden="true" size={17} className="text-accent" />
               {t("hero.secondaryButton")}
             </ButtonLink>
           </div>
+
+          <ul aria-label={t("hero.highlights")} className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-fg/90">
+            {badges.map(({ icon: Icon, label }) => (
+              <li key={label} className="flex items-center gap-2.5">
+                <Icon aria-hidden="true" size={22} className="text-accent" />
+                {label}
+              </li>
+            ))}
+          </ul>
         </div>
       </Container>
     </section>

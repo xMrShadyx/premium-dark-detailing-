@@ -196,7 +196,7 @@ export function BookingDialog({ state, busy, error, onClose, onSave, onStatus, o
                 key={d.minutes}
                 type="button"
                 onClick={() => values.startDate && values.startTime && setValues((v) => ({ ...v, ...range(v.startDate, v.startTime, d.minutes) }))}
-                className={`rounded-full border px-2.5 py-1 ${length === d.minutes ? "border-gold text-gold" : "border-line text-fg-muted hover:border-gold/60 hover:text-fg"}`}
+                className={`rounded-full border px-2.5 py-1 ${length === d.minutes ? "border-accent text-accent" : "border-line text-fg-muted hover:border-accent/60 hover:text-fg"}`}
               >
                 {d.label}
               </button>
@@ -230,7 +230,7 @@ export function BookingDialog({ state, busy, error, onClose, onSave, onStatus, o
             {state.mode === "edit" ? "Запази" : "Запиши"}
           </Button>
           {tel && (
-            <a href={tel} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-sm hover:border-gold/60">
+            <a href={tel} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-line px-4 text-sm hover:border-accent/60">
               <Phone aria-hidden="true" size={15} /> Обади се
             </a>
           )}

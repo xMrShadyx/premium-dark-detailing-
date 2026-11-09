@@ -1,26 +1,28 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   Premium Dark design tokens (SRS §3.2, §3.3)
+   Design tokens — navy + neon blue, from the MM Detailing mock-up
    Usage: bg-bg, bg-bg-2, bg-surface, text-fg, text-fg-muted,
-          border-line, text-gold, bg-gold, font-display, font-sans …
+          border-line, text-accent, bg-accent, font-display, font-sans …
    ------------------------------------------------------------------ */
 /* Dark is the default palette. The light palette and the always-dark
    .theme-dark scope are defined in the base layer below. */
 @theme {
-  --color-bg: #0b0b0d;
-  --color-bg-2: #141417;
-  --color-surface: #1a1a1e;
-  --color-surface-hover: #242429;
-  --color-gold: #c9a45c;
-  --color-gold-hover: #d8b775;
-  --color-fg: #f5f5f5;
-  --color-fg-muted: #b8b8b8;
-  --color-line: #343438;
+  --color-bg: #05080e;
+  --color-bg-2: #08101a;
+  --color-surface: #0c1622;
+  --color-surface-hover: #12202f;
+  --color-accent: #2b8cff;
+  --color-accent-hover: #55a4ff;
+  --color-fg: #f4f7fb;
+  --color-fg-muted: #a3b0c2;
+  --color-line: #1b2a3c;
   --color-error: #ef6b6b;
-  --color-success: #69b58c;
+  --color-success: #4cc38a;
 
   --font-display: "Manrope Variable", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  /* Bold italic headline face from the brand mock-up (hero title, card titles). */
+  --font-brand: "Exo 2", "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, sans-serif;
 
   /* Fluid type scale — desktop targets from SRS §3.3 */
@@ -46,8 +48,8 @@
     --color-bg-2: #edebe6;
     --color-surface: #ffffff;
     --color-surface-hover: #f2f0eb;
-    --color-gold: #8a6a2b; /* darker gold: 5:1 on white for text and buttons */
-    --color-gold-hover: #73581f;
+    --color-accent: #0a5fcc; /* darker blue: readable on white for text and buttons */
+    --color-accent-hover: #084ea8;
     --color-fg: #141417;
     --color-fg-muted: #55555c;
     --color-line: #dad7d0;
@@ -58,17 +60,17 @@
 
   :root[data-theme="dark"],
   .theme-dark {
-    --color-bg: #0b0b0d;
-    --color-bg-2: #141417;
-    --color-surface: #1a1a1e;
-    --color-surface-hover: #242429;
-    --color-gold: #c9a45c;
-    --color-gold-hover: #d8b775;
-    --color-fg: #f5f5f5;
-    --color-fg-muted: #b8b8b8;
-    --color-line: #343438;
+    --color-bg: #05080e;
+    --color-bg-2: #08101a;
+    --color-surface: #0c1622;
+    --color-surface-hover: #12202f;
+    --color-accent: #2b8cff;
+    --color-accent-hover: #55a4ff;
+    --color-fg: #f4f7fb;
+    --color-fg-muted: #a3b0c2;
+    --color-line: #1b2a3c;
     --color-error: #ef6b6b;
-    --color-success: #69b58c;
+    --color-success: #4cc38a;
     color-scheme: dark;
   }
 
@@ -118,18 +120,32 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
     border-radius: 4px;
   }
 
   ::selection {
-    background: color-mix(in srgb, var(--color-gold) 35%, transparent);
+    background: color-mix(in srgb, var(--color-accent) 35%, transparent);
     color: var(--color-fg);
   }
 }
 
 @layer components {
+  /* Neon-blue glow used on primary buttons, icons and dividers (from the mock-up). */
+  .glow-accent {
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 70%, transparent),
+      0 6px 24px -4px color-mix(in srgb, var(--color-accent) 70%, transparent);
+  }
+  .text-glow {
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-accent) 75%, transparent));
+  }
+  .card-glass {
+    background: linear-gradient(180deg, color-mix(in srgb, var(--color-surface) 92%, transparent), var(--color-bg-2));
+    border: 1px solid color-mix(in srgb, var(--color-accent) 18%, var(--color-line));
+  }
+
   /* Subtle entrance for above-the-fold hero content. CSS only, no JS delay. */
   .animate-rise {
     animation: rise 0.8s var(--ease-premium) both;

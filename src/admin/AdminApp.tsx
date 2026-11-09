@@ -205,7 +205,7 @@ export function AdminApp() {
                     <Icon aria-hidden="true" size={17} />
                     {label}
                     {!!badge && (
-                      <span className="rounded-full bg-gold px-2 py-0.5 text-xs font-semibold text-bg" aria-label={S.newBadge(badge)}>
+                      <span className="rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-bg" aria-label={S.newBadge(badge)}>
                         {badge}
                       </span>
                     )}

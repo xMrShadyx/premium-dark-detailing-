@@ -1,33 +1,30 @@
 import { useTranslation } from "react-i18next";
-import { ArrowRight, Check, Clock } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import type { Service } from "@/config/schema";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useInquiryIntent } from "@/features/inquiries/InquiryIntentContext";
-import { formatDuration, formatPrice } from "@/lib/format";
 import { assetUrl, localize } from "@/lib/locale";
-import { buttonClasses } from "@/components/ui/Button";
+import { ServiceIcon } from "./ServiceIcon";
 
-type Props = { service: Service; index: number };
+type Props = { service: Service };
 
-/** One generic card for every configured service — no per-service components. */
-export function ServiceCard({ service, index }: Props) {
+/** Service card from the mock-up: photo, icon + title, checklist and an arrow that books the service. */
+export function ServiceCard({ service }: Props) {
   const { t } = useTranslation();
   const { lang } = useLocale();
-  const { setServiceId } = useInquiryIntent();
+  const { openBooking } = useInquiryIntent();
 
   const title = localize(service.title, lang);
-  const price = formatPrice(service.price, lang, t);
-  const duration = formatDuration(service.durationMinutes, t);
   const titleId = `service-${service.id}-title`;
 
   return (
     <article
       aria-labelledby={titleId}
       data-service-id={service.id}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-[border-color,background-color] duration-300 hover:border-gold/40 hover:bg-surface-hover/60 motion-reduce:transition-none"
+      className="card-glass group relative flex flex-col overflow-hidden rounded-2xl transition-[border-color,box-shadow] duration-300 hover:border-accent/50 hover:shadow-[0_0_30px_-8px] hover:shadow-accent/60 motion-reduce:transition-none"
     >
-      <div className="relative aspect-[16/9] overflow-hidden bg-bg-2">
-        {service.image ? (
+      <div className="relative h-36 overflow-hidden sm:h-40">
+        {service.image && (
           <img
             src={assetUrl(service.image)}
             alt=""
@@ -35,70 +32,35 @@ export function ServiceCard({ service, index }: Props) {
             decoding="async"
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] motion-reduce:transition-none"
           />
-        ) : (
-          // Neutral visual until real photography is supplied.
-          <div aria-hidden="true" className="absolute inset-0">
-            <div className="absolute inset-0 bg-[radial-gradient(80%_100%_at_100%_0%,color-mix(in_srgb,var(--color-gold)_16%,transparent)_0%,transparent_60%)]" />
-            <div className="absolute inset-y-0 right-[18%] w-px rotate-[20deg] bg-gradient-to-b from-transparent via-gold/40 to-transparent" />
-          </div>
         )}
-        <span
-          aria-hidden="true"
-          className="absolute bottom-4 left-5 font-display text-5xl font-semibold text-fg/10 sm:text-6xl"
-        >
-          {String(index + 1).padStart(2, "0")}
-        </span>
+        <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-bg-2 via-bg-2/30 to-transparent" />
       </div>
 
-      <div className="flex flex-1 flex-col p-6 sm:p-8">
-        <h3 id={titleId} className="text-card font-semibold text-fg">
-          {title}
-        </h3>
-        <p className="mt-2 font-medium text-fg">{localize(service.shortDescription, lang)}</p>
-        <p className="mt-3 text-fg-muted">{localize(service.description, lang)}</p>
-
-        {service.features.length > 0 && (
-          <div className="mt-6">
-            <h4 className="text-xs font-semibold tracking-[0.16em] text-fg-muted uppercase">
-              {t("services.included")}
-            </h4>
-            <ul className="mt-3 grid gap-2.5 sm:grid-cols-2">
+      <div className="relative -mt-6 flex flex-1 items-end gap-4 px-6 pb-6 sm:px-7">
+        <div className="min-w-0 flex-1">
+          <h3 id={titleId} className="flex items-center gap-4 text-card font-extrabold text-fg">
+            <ServiceIcon id={service.id} size={44} className="shrink-0 text-accent text-glow" />
+            {title}
+          </h3>
+          {service.features.length > 0 && (
+            <ul className="mt-5 grid gap-2">
               {service.features.map((feature) => (
-                <li key={feature.en} className="flex items-start gap-2.5 text-sm text-fg">
-                  <Check aria-hidden="true" size={16} className="mt-0.5 shrink-0 text-gold" />
+                <li key={feature.en} className="flex items-start gap-3 text-sm text-fg/90">
+                  <Check aria-hidden="true" size={18} strokeWidth={3} className="mt-0.5 shrink-0 text-accent" />
                   {localize(feature, lang)}
                 </li>
               ))}
             </ul>
-          </div>
-        )}
-
-        <div className="mt-auto pt-8">
-          <dl className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-line pt-5 text-sm">
-            <div className="flex items-baseline gap-2">
-              <dt className="sr-only">{t("services.price")}</dt>
-              <dd className="font-display text-lg font-semibold text-fg">{price}</dd>
-            </div>
-            {duration && (
-              <div className="flex items-center gap-1.5 text-fg-muted">
-                <dt>
-                  <Clock aria-hidden="true" size={15} />
-                  <span className="sr-only">{t("services.duration")}</span>
-                </dt>
-                <dd>{duration}</dd>
-              </div>
-            )}
-          </dl>
-          <a
-            href="#contact"
-            onClick={() => setServiceId(service.id)}
-            className={buttonClasses({ variant: "secondary" }, "mt-5 w-full sm:w-auto")}
-          >
-            {t("services.inquire")}
-            <span className="sr-only">: {title}</span>
-            <ArrowRight aria-hidden="true" size={16} />
-          </a>
+          )}
         </div>
+        <button
+          type="button"
+          onClick={() => openBooking(service.id)}
+          aria-label={`${t("services.inquire")}: ${title}`}
+          className="mb-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-accent/70 text-accent transition-colors hover:bg-accent hover:text-white"
+        >
+          <ArrowRight aria-hidden="true" size={18} />
+        </button>
       </div>
     </article>
   );

@@ -19,18 +19,18 @@ describe("LanguageSwitcher", () => {
         <LanguageSwitcher />
         <Probe />
       </>,
-      { lang: "bg", hash: "#pricing" },
+      { lang: "bg", hash: "#gallery" },
     );
 
-    expect(screen.getByRole("heading")).toHaveTextContent("Всеки детайл има значение.");
+    expect(screen.getByRole("heading")).toHaveTextContent("Върни блясъка.");
     expect(screen.getByRole("link", { name: "bg" })).toHaveAttribute("aria-current", "true");
 
     await user.click(screen.getByRole("link", { name: "en" }));
 
     expect(window.location.pathname).toBe("/en/");
-    expect(window.location.hash).toBe("#pricing");
+    expect(window.location.hash).toBe("#gallery");
     expect(document.documentElement.lang).toBe("en");
-    expect(screen.getByRole("heading")).toHaveTextContent("Every detail matters.");
+    expect(screen.getByRole("heading")).toHaveTextContent("Bring back the shine.");
     expect(window.localStorage.getItem(STORAGE_KEY)).toBe("en");
   });
 

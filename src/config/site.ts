@@ -9,18 +9,18 @@ import type { SiteConfig } from "./schema";
  */
 export const siteConfig = {
   businessName: "MM Detailing",
-  logo: "/images/brand/mm-mark.webp",
+  logo: "/images/brand/mm-logo-lockup.webp",
   siteUrl: "",
 
   defaultLanguage: "bg",
   supportedLanguages: ["bg", "en"],
 
   hero: {
-    // Illustration placeholder — replace with a real photo (AVIF/WebP) when available.
-    image: "/images/hero/hero-car.svg",
+    // From the design mock-up — replace with a real photo (AVIF/WebP) when available.
+    image: "/images/site/hero-headlight.webp",
     imageAlt: {
-      bg: "Илюстрация на автомобил в студио",
-      en: "Illustration of a car in a studio",
+      bg: "Светещ LED фар на тъмен автомобил",
+      en: "Glowing LED headlight of a dark car",
     },
   },
 

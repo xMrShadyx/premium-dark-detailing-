@@ -23,24 +23,29 @@
     "home": "Home",
     "services": "Services",
     "pricing": "Pricing",
-    "gallery": "Gallery",
+    "gallery": "Results",
     "about": "About",
     "contact": "Contact",
-    "cta": "Inquiry"
+    "cta": "Book now"
   },
   "hero": {
-    "eyebrow": "PROFESSIONAL AUTOMOTIVE CARE",
-    "title": "Every detail matters.",
-    "description": "Professional car interior deep cleaning and headlight restoration.",
-    "primaryButton": "Send an Inquiry",
-    "secondaryButton": "Our Services"
+    "eyebrow": "Professional car detailing",
+    "title": "Bring back the shine.",
+    "description": "Headlight polishing and restoration, and deep cleaning of car interiors.",
+    "primaryButton": "Book now",
+    "secondaryButton": "See results",
+    "titleAccent": "Feel the difference.",
+    "badgeQuality": "Quality work",
+    "badgeFast": "Quick service",
+    "badgeVisible": "Visible results",
+    "highlights": "Highlights"
   },
   "services": {
-    "eyebrow": "Services",
-    "title": "What we do",
+    "eyebrow": "Our services",
+    "title": "Professional care for your car",
     "subtitle": "Two specialised services, carried out with care and precision.",
     "included": "What's included",
-    "inquire": "Ask about this service",
+    "inquire": "Book this service",
     "price": "Price",
     "duration": "Duration"
   },
@@ -71,7 +76,13 @@
   },
   "footer": {
     "tagline": "Car interior deep cleaning and headlight restoration.",
-    "copyright": "© {{year}}"
+    "copyright": "© {{year}}",
+    "quickLinks": "Quick links",
+    "services": "Services",
+    "contact": "Contact us",
+    "owners": "Marin & Martin",
+    "rights": "All rights reserved.",
+    "social": "Social media"
   },
   "form": {
     "name": "Name",
@@ -120,8 +131,8 @@
     "messageHeader": "Inquiry from the website"
   },
   "gallery": {
-    "eyebrow": "Gallery",
-    "title": "Before and after",
+    "eyebrow": "Results",
+    "title": "Before & After",
     "subtitle": "Drag the divider to compare.",
     "emptyTitle": "Coming soon",
     "emptyText": "We will publish before-and-after photos of real vehicles once they are ready.",
@@ -132,6 +143,21 @@
     "sliderLabel": "Before and after comparison: {{title}}",
     "sliderHint": "Use the left and right arrow keys",
     "filterLabel": "Filter by service",
-    "filterAll": "All"
+    "filterAll": "All",
+    "pageLabel": "Show comparisons {{from}}–{{to}}",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "cta": {
+    "title": "Book your appointment today!",
+    "text": "Easy, quick and convenient – contact us by phone, Viber or email.",
+    "viber": "Message on Viber",
+    "email": "Send an email",
+    "online": "Book online"
+  },
+  "booking": {
+    "title": "Book an appointment",
+    "subtitle": "Tell us about the car and the service, and we will get back to you to agree on a day and time.",
+    "close": "Close"
   }
 }
