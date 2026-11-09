@@ -3,10 +3,10 @@ import {createRoot} from 'react-dom/client';
 import {site,content,type Lang} from './config';
 import './style.css';
 function App(){
- const [lang,setLang]=useState<Lang>(location.pathname.startsWith('/en')?'en':'bg');
+ const [lang,setLang]=useState<Lang>(location.pathname.endsWith('/en/')?'en':'bg');
  const [menu,setMenu]=useState(false),[service,setService]=useState('interior'),[name,setName]=useState(''),[phone,setPhone]=useState(''),[vehicle,setVehicle]=useState(''),[message,setMessage]=useState(''),[consent,setConsent]=useState(false),[feedback,setFeedback]=useState('');
  const t=content[lang],ids=['home','services','pricing','gallery','contact'];
- const change=(l:Lang)=>{setLang(l);history.replaceState(null,'','/'+l+'/'+location.hash);document.documentElement.lang=l;setMenu(false)};
+ const change=(l:Lang)=>{setLang(l);history.replaceState(null,'',import.meta.env.BASE_URL+l+'/'+location.hash);document.documentElement.lang=l;setMenu(false)};
  const inquiry=()=>[t.inquiry,t.name+': '+name,t.phone+': '+phone,t.service+': '+(service==='interior'?t.interior:t.lights),vehicle?t.vehicle+': '+vehicle:'',t.message+': '+message].filter(Boolean).join('\n');
  const valid=()=>{if(!name.trim()||!phone.trim()||message.trim().length<10||!consent){setFeedback(t.required);return false}setFeedback('');return true};
  const email=()=>{if(!valid())return;if(!site.email){setFeedback(t.emailMissing);return}location.href='mailto:'+site.email+'?subject='+encodeURIComponent(t.inquiry)+'&body='+encodeURIComponent(inquiry())};
