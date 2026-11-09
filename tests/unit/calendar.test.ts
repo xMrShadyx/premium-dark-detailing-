@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { barsForMonth, buildMonths, overlappingIds } from "@/admin/calendar/model";
+import { barsForMonth, buildMonths, overlappingIds, shadeIndexes } from "@/admin/calendar/model";
 import type { InquiryRow } from "@/admin/api";
 
 const row = (id: string, start: Date, minutes: number): InquiryRow => ({
@@ -52,5 +52,15 @@ describe("calendar model", () => {
     const a = row("a", new Date(2026, 10, 12, 9), 60);
     const b = row("b", new Date(2026, 10, 12, 10), 60);
     expect(overlappingIds([a, b]).size).toBe(0);
+  });
+
+  it("gives neighbouring entries of the same color different shades", () => {
+    const a = row("a", new Date(2026, 10, 5, 9), 1440); // 5 → 6 Nov
+    const b = row("b", new Date(2026, 10, 6, 9), 2 * 1440); // 6 → 8 Nov, touches a
+    const c = row("c", new Date(2026, 10, 9, 9), 60); // the day after b ends
+    const d = row("d", new Date(2026, 10, 12, 9), 60); // after a free day: back to base
+    const other = row("x", new Date(2026, 10, 6, 12), 60);
+    const shades = shadeIndexes([a, b, c, d, other], (r) => (r.id === "x" ? "green" : "blue"), 3);
+    expect(["a", "b", "c", "d", "x"].map((id) => shades.get(id))).toEqual([0, 1, 2, 0, 0]);
   });
 });

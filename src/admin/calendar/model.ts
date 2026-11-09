@@ -101,6 +101,44 @@ export function barsForMonth(rows: InquiryRow[], month: MonthRow, overlaps: Set<
   return raw;
 }
 
+/** Local midnight of the day a moment falls on. */
+function dayOf(d: Date): number {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+}
+
+/**
+ * Shade index (0, 1, 2…) per entry id, so entries of the same color that sit next to each other
+ * (same or consecutive days) get different shades. A gap of a free day resets to the base shade.
+ */
+export function shadeIndexes(
+  rows: InquiryRow[],
+  colorOf: (row: InquiryRow) => string,
+  shades: number,
+): Map<string, number> {
+  const groups = new Map<string, { id: string; start: Date; end: Date }[]>();
+  for (const row of rows) {
+    const range = entryRange(row);
+    if (!range) continue;
+    const key = colorOf(row);
+    groups.set(key, [...(groups.get(key) ?? []), { id: row.id, ...range }]);
+  }
+
+  const result = new Map<string, number>();
+  for (const group of groups.values()) {
+    group.sort((a, b) => a.start.getTime() - b.start.getTime());
+    let shade = 0;
+    let dayAfterRun = -Infinity; // the day right after the last occupied day so far
+    for (const entry of group) {
+      shade = dayOf(entry.start) <= dayAfterRun ? (shade + 1) % shades : 0;
+      result.set(entry.id, shade);
+      const last = new Date(entry.end.getTime() - 60_000); // ending at midnight does not occupy the next day
+      const after = new Date(last.getFullYear(), last.getMonth(), last.getDate() + 1).getTime();
+      dayAfterRun = Math.max(dayAfterRun, after);
+    }
+  }
+  return result;
+}
+
 /** Duration presets: hours within a day, or whole days (ending 8 h into the last day). */
 export const DURATIONS: { label: string; minutes: number }[] = [
   { label: "1 ч", minutes: 60 },

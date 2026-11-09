@@ -22,12 +22,19 @@ import {
   MONTHS_BG,
   MONTHS_BG_LONG,
   overlappingIds,
+  shadeIndexes,
   WEEKDAYS_BG,
   type MonthRow,
 } from "./model";
 
 const SERVICE_COLORS = ["#2f6fd6", "#1f8a99", "#8a5cd0", "#c46a2b"];
 const DONE_COLOR = "#3f8f4f";
+/** Variants of one color for neighbouring entries: base, lighter, darker. */
+const SHADES: ((color: string) => string)[] = [
+  (c) => c,
+  (c) => `color-mix(in srgb, ${c} 72%, white)`,
+  (c) => `color-mix(in srgb, ${c} 68%, black)`,
+];
 const LANE = 1.45; // rem per stacked bar
 const MONTHS_SHOWN = 12;
 
@@ -36,6 +43,10 @@ type Menu = { day: string; x: number; y: number };
 function serviceColor(id: string): string {
   const index = getEnabledServices().findIndex((s) => s.id === id);
   return SERVICE_COLORS[(index < 0 ? 0 : index) % SERVICE_COLORS.length]!;
+}
+
+function baseColor(row: InquiryRow): string {
+  return row.status === "done" ? DONE_COLOR : serviceColor(row.service_id);
 }
 
 function todayIso(): string {
@@ -66,6 +77,7 @@ export function CalendarPanel({
   const months = useMemo(() => buildMonths(start, MONTHS_SHOWN), [start]);
   const entries = useMemo(() => calendarEntries(inquiries), [inquiries]);
   const overlaps = useMemo(() => overlappingIds(entries), [entries]);
+  const shades = useMemo(() => shadeIndexes(entries, baseColor, SHADES.length), [entries]);
   const unassigned = useMemo(
     () =>
       inquiries
@@ -134,13 +146,15 @@ export function CalendarPanel({
 
   const save = (values: BookingValues) => {
     if (!dialog) return;
+    const from = new Date(`${values.startDate}T${values.startTime}`);
+    const to = new Date(`${values.endDate}T${values.endTime}`);
     const fields = {
       name: values.name.trim(),
       phone: values.phone.trim(),
       service_id: values.serviceId,
       vehicle: values.vehicle.trim() || null,
-      scheduled_at: new Date(`${values.date}T${values.time}`).toISOString(),
-      duration_minutes: values.duration,
+      scheduled_at: from.toISOString(),
+      duration_minutes: Math.round((to.getTime() - from.getTime()) / 60_000),
       admin_note: values.note.trim() || null,
     };
     void run(async () => {
@@ -224,7 +238,7 @@ export function CalendarPanel({
         <div className="pointer-events-none relative z-10" style={{ gridRow: 1, gridColumn: "2 / -1" }}>
           {bars.map((bar) => {
             const row = bar.row;
-            const color = row.status === "done" ? DONE_COLOR : serviceColor(row.service_id);
+            const color = SHADES[shades.get(row.id) ?? 0]!(baseColor(row));
             const time = row.scheduled_at
               ? new Date(row.scheduled_at).toLocaleTimeString("bg-BG", { hour: "2-digit", minute: "2-digit" })
               : "";
@@ -334,6 +348,9 @@ export function CalendarPanel({
 
       {/* --- Toolbar ---------------------------------------------------------- */}
       <div className="flex flex-wrap items-center gap-2">
+        <Button size="sm" onClick={() => setDialog({ mode: "create", date: today })}>
+          <CalendarPlus aria-hidden="true" size={16} /> Нов запис
+        </Button>
         <Button size="sm" variant="secondary" aria-label="Предишен месец" onClick={() => shift(-1)}>
           <ChevronLeft aria-hidden="true" size={17} />
         </Button>

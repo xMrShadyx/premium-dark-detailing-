@@ -20,11 +20,30 @@ export type BookingValues = {
   phone: string;
   serviceId: string;
   vehicle: string;
-  date: string;
-  time: string;
-  duration: number;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
   note: string;
 };
+
+type When = Pick<BookingValues, "startDate" | "startTime" | "endDate" | "endTime">;
+
+function toMs(date: string, time: string): number {
+  return new Date(`${date}T${time}`).getTime();
+}
+
+/** Start/end inputs for a start moment and a length in minutes. */
+function range(date: string, time: string, minutes: number): When {
+  const end = toLocalInputs(new Date(toMs(date, time) + minutes * 60_000));
+  return { startDate: date, startTime: time, endDate: end.date, endTime: end.time };
+}
+
+/** Minutes between start and end, or null when the end is missing or not after the start. */
+function lengthOf(v: When): number | null {
+  const ms = toMs(v.endDate, v.endTime) - toMs(v.startDate, v.startTime);
+  return Number.isFinite(ms) && ms > 0 ? Math.round(ms / 60_000) : null;
+}
 
 type Props = {
   state: DialogState;
@@ -42,7 +61,7 @@ function initialValues(state: DialogState): BookingValues {
   const services = getEnabledServices();
   if (state.mode === "create") {
     const serviceId = services[0]?.id ?? "";
-    return { name: "", phone: "", serviceId, vehicle: "", date: state.date, time: "09:00", duration: serviceDuration(serviceId), note: "" };
+    return { name: "", phone: "", serviceId, vehicle: "", ...range(state.date, "09:00", serviceDuration(serviceId)), note: "" };
   }
   const row = state.row;
   const when = state.mode === "edit" && row.scheduled_at ? toLocalInputs(new Date(row.scheduled_at)) : null;
@@ -51,9 +70,11 @@ function initialValues(state: DialogState): BookingValues {
     phone: row.phone,
     serviceId: row.service_id,
     vehicle: row.vehicle ?? "",
-    date: state.mode === "assign" ? state.date : (when?.date ?? ""),
-    time: when?.time ?? "09:00",
-    duration: row.duration_minutes ?? serviceDuration(row.service_id),
+    ...range(
+      state.mode === "assign" ? state.date : (when?.date ?? ""),
+      when?.time ?? "09:00",
+      row.duration_minutes ?? serviceDuration(row.service_id),
+    ),
     note: row.admin_note ?? "",
   };
 }
@@ -75,16 +96,26 @@ export function BookingDialog({ state, busy, error, onClose, onSave, onStatus, o
   const set = <K extends keyof BookingValues>(key: K, value: BookingValues[K]) =>
     setValues((v) => ({ ...v, [key]: value }));
 
-  const durationOptions = DURATIONS.some((d) => d.minutes === values.duration)
-    ? DURATIONS
-    : [...DURATIONS, { label: `${values.duration} мин`, minutes: values.duration }];
+  const length = lengthOf(values);
+
+  /** Moving the start keeps the entry's length, so the end follows it. */
+  const setStart = (key: "startDate" | "startTime", value: string) =>
+    setValues((v) => {
+      const next = { ...v, [key]: value };
+      if (!next.startDate || !next.startTime) return next;
+      return { ...next, ...range(next.startDate, next.startTime, lengthOf(v) ?? serviceDuration(v.serviceId)) };
+    });
 
   const valid =
     values.name.trim().length >= 2 &&
     PHONE_RE.test(values.phone.trim()) &&
     !!values.serviceId &&
-    /^\d{4}-\d{2}-\d{2}$/.test(values.date) &&
-    /^\d{2}:\d{2}$/.test(values.time);
+    /^\d{4}-\d{2}-\d{2}$/.test(values.startDate) &&
+    /^\d{2}:\d{2}$/.test(values.startTime) &&
+    /^\d{4}-\d{2}-\d{2}$/.test(values.endDate) &&
+    /^\d{2}:\d{2}$/.test(values.endTime) &&
+    length !== null;
+  const endBeforeStart = !!values.endDate && !!values.endTime && length === null;
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
@@ -143,22 +174,32 @@ export function BookingDialog({ state, busy, error, onClose, onSave, onStatus, o
             Автомобил
             <input maxLength={100} value={values.vehicle} onChange={(e) => set("vehicle", e.target.value)} className={inputClass} />
           </label>
-          <label className="flex flex-col gap-1.5 text-sm font-medium">
-            Дата
-            <input required type="date" value={values.date} onChange={(e) => set("date", e.target.value)} className={inputClass} />
-          </label>
-          <div className="grid grid-cols-2 gap-3">
-            <label className="flex flex-col gap-1.5 text-sm font-medium">
-              Час
-              <input required type="time" step={900} value={values.time} onChange={(e) => set("time", e.target.value)} className={inputClass} />
-            </label>
-            <label className="flex flex-col gap-1.5 text-sm font-medium">
-              Продължителност
-              <select value={values.duration} onChange={(e) => set("duration", Number(e.target.value))} className={inputClass}>
-                {durationOptions.map((d) => <option key={d.minutes} value={d.minutes}>{d.label}</option>)}
-              </select>
-            </label>
+          <fieldset className="grid min-w-0 grid-cols-[minmax(0,1fr)_8.5rem] gap-3 sm:col-span-2">
+            <legend className="mb-1.5 text-sm font-medium">От</legend>
+            <input required type="date" aria-label="Начална дата" value={values.startDate} onChange={(e) => setStart("startDate", e.target.value)} className={inputClass} />
+            <input required type="time" aria-label="Начален час" step={900} value={values.startTime} onChange={(e) => setStart("startTime", e.target.value)} className={inputClass} />
+          </fieldset>
+          <fieldset className="grid min-w-0 grid-cols-[minmax(0,1fr)_8.5rem] gap-3 sm:col-span-2">
+            <legend className="mb-1.5 text-sm font-medium">До</legend>
+            <input required type="date" aria-label="Крайна дата" min={values.startDate} value={values.endDate} onChange={(e) => set("endDate", e.target.value)} className={inputClass} aria-invalid={endBeforeStart} />
+            <input required type="time" aria-label="Краен час" step={900} value={values.endTime} onChange={(e) => set("endTime", e.target.value)} className={inputClass} aria-invalid={endBeforeStart} />
+          </fieldset>
+          <div className="flex flex-wrap items-center gap-1.5 text-xs sm:col-span-2">
+            <span className="text-fg-muted">Бърз избор:</span>
+            {DURATIONS.map((d) => (
+              <button
+                key={d.minutes}
+                type="button"
+                onClick={() => values.startDate && values.startTime && setValues((v) => ({ ...v, ...range(v.startDate, v.startTime, d.minutes) }))}
+                className={`rounded-full border px-2.5 py-1 ${length === d.minutes ? "border-gold text-gold" : "border-line text-fg-muted hover:border-gold/60 hover:text-fg"}`}
+              >
+                {d.label}
+              </button>
+            ))}
           </div>
+          {endBeforeStart && (
+            <p role="alert" className="text-sm text-error sm:col-span-2">Краят трябва да е след началото.</p>
+          )}
           <label className="flex flex-col gap-1.5 text-sm font-medium sm:col-span-2">
             Бележка
             <textarea rows={2} maxLength={2000} value={values.note} onChange={(e) => set("note", e.target.value)} className={inputClass} />
