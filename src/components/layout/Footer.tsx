@@ -29,11 +29,11 @@ export function Footer() {
   ].filter((s) => s.href);
 
   return (
-    <footer id="about" className="bg-bg">
+    <footer id="about" className="theme-dark bg-bg">
       <Container className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.4fr_auto]">
         <div>
           {logo ? (
-            <img src={assetUrl(logo)} alt={businessName} width={720} height={338} loading="lazy" className="h-28 w-auto" />
+            <img src={assetUrl(logo)} alt={businessName} width={900} height={260} loading="lazy" className="h-auto w-full max-w-[22rem]" />
           ) : (
             hasBusinessName() && <p className="font-brand text-2xl font-extrabold italic">{businessName}</p>
           )}

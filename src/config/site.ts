@@ -9,7 +9,7 @@ import type { SiteConfig } from "./schema";
  */
 export const siteConfig = {
   businessName: "MM Detailing",
-  logo: "/images/brand/mm-logo-v2.webp",
+  logo: "/images/brand/mm-logo-v3.webp",
   siteUrl: "",
 
   defaultLanguage: "bg",

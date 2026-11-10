@@ -28,10 +28,11 @@ export function Header() {
       data-scrolled={scrolled || menuOpen}
       className={cn(
         "fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color,backdrop-filter] duration-300",
+        // Always the dark palette: the glowing logo is drawn for a dark background.
+        "theme-dark",
         scrolled || menuOpen
           ? "border-accent/15 bg-bg/90 backdrop-blur-md"
-          : // Over the always-dark hero the header uses the dark palette in both themes.
-            "theme-dark border-transparent bg-transparent",
+          : "border-transparent bg-bg/95 backdrop-blur-sm",
       )}
     >
       <a
@@ -53,9 +54,9 @@ export function Header() {
               <img
                 src={assetUrl(siteConfig.logo)}
                 alt={siteConfig.businessName}
-                width={720}
-                height={338}
-                className="h-14 w-auto lg:h-20"
+                width={900}
+                height={260}
+                className="h-10 w-auto xs:h-12 lg:h-16"
               />
             ) : (
               siteConfig.businessName
