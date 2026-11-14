@@ -34,7 +34,7 @@ describe("PricingSection", () => {
         <BookingDialog />
       </>,
     );
-    await user.click(screen.getByRole("button", { name: /Запази час: Пране на пътнически бус/ }));
+    await user.click(screen.getByRole("button", { name: /Запази час\s*:\s*Пране на пътнически бус/ }));
     expect(screen.getByRole("combobox", { name: "Услуга", hidden: true })).toHaveValue("interior-cleaning");
     expect(norm((screen.getByRole("textbox", { name: "Съобщение", hidden: true }) as HTMLTextAreaElement).value)).toContain(
       "Пране на пътнически бус – 60 €",

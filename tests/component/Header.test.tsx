@@ -16,7 +16,7 @@ describe("Header", () => {
 
   it("renders the logo as a link home, named after the business", () => {
     renderWithProviders(<Header />);
-    const logo = screen.getByRole("img", { name: "MM Detailing" });
+    const logo = screen.getByRole("img", { name: "M&M Garage" });
     expect(logo.closest("a")).toHaveAttribute("href", "#home");
   });
 
