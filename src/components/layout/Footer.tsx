@@ -33,7 +33,7 @@ export function Footer() {
       <Container className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.4fr_auto]">
         <div>
           {logo ? (
-            <img src={assetUrl(logo)} alt={businessName} width={900} height={260} loading="lazy" className="h-auto w-full max-w-[22rem]" />
+            <img src={assetUrl(logo)} alt={businessName} width={1098} height={467} loading="lazy" className="h-auto w-full max-w-[18rem]" />
           ) : (
             hasBusinessName() && <p className="font-brand text-2xl font-extrabold italic">{businessName}</p>
           )}
