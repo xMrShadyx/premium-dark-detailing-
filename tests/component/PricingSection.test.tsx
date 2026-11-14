@@ -6,7 +6,7 @@ import { BookingDialog } from "@/features/inquiries/BookingDialog";
 import { bundleValue, getEnabledOffers } from "@/config";
 import { renderWithProviders } from "../test-utils";
 
-const norm = (s: string | null) => (s ?? "").replace(/[  ]/g, " ");
+const norm = (s: string | null) => (s ?? "").replace(/[\u00a0\u202f]/g, " ");
 
 describe("PricingSection", () => {
   it("lists every regular offer with its price, and the promo package separately", () => {
