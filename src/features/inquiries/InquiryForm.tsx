@@ -37,7 +37,7 @@ function todayIso(): string {
 export function InquiryForm({ onSent }: { onSent?: () => void } = {}) {
   const { t } = useTranslation();
   const { lang } = useLocale();
-  const { serviceId: intendedService } = useInquiryIntent();
+  const { serviceId: intendedService, presetMessage } = useInquiryIntent();
   const uid = useId();
 
   const services = useMemo(() => getEnabledServices(), []);
@@ -58,6 +58,11 @@ export function InquiryForm({ onSent }: { onSent?: () => void } = {}) {
       setErrors((e) => ({ ...e, serviceId: undefined }));
     }
   }, [intendedService, serviceIds]);
+
+  // A price-list line ("Пране на пътнически бус – 60 €") starts the message; the visitor adds the rest.
+  useEffect(() => {
+    if (presetMessage) setValues((v) => (v.message.trim() ? v : { ...v, message: `${presetMessage}\n` }));
+  }, [presetMessage]);
 
   const id = (field: InquiryField) => `${uid}-${field}`;
 

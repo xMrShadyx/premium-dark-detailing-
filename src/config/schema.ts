@@ -124,6 +124,26 @@ export const galleryItemSchema = z.object({
 
 export const galleryItemsSchema = z.array(galleryItemSchema);
 
+/** One line of the price list (from the M&M Garage ad). */
+export const offerSchema = z.object({
+  id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, { message: "Use kebab-case ids" }),
+  /** Service category used to preselect the booking form. */
+  serviceId: z.string().min(1),
+  icon: z.enum(["car", "van", "headlight", "headlight-coated", "package"]),
+  title: localizedTextSchema,
+  /** Small line under the title, e.g. "(без покритие)". */
+  note: localizedTextSchema.optional(),
+  /** Gift that comes with the offer, e.g. washer fluid. */
+  gift: localizedTextSchema.optional(),
+  price: priceSchema,
+  /** Promo package: ids of the offers it bundles, for the "instead of X €" line. */
+  bundles: z.array(z.string()).optional(),
+  promo: z.boolean().optional(),
+  enabled: z.boolean(),
+  order: z.number().int(),
+});
+export const offersSchema = z.array(offerSchema);
+
 export type Language = z.infer<typeof languageSchema>;
 export type LocalizedText = z.infer<typeof localizedTextSchema>;
 export type SiteConfig = z.infer<typeof siteConfigSchema>;
@@ -131,3 +151,4 @@ export type Price = z.infer<typeof priceSchema>;
 export type Service = z.infer<typeof serviceSchema>;
 export type WorkingHours = z.infer<typeof workingHoursSchema>;
 export type GalleryItem = z.infer<typeof galleryItemSchema>;
+export type Offer = z.infer<typeof offerSchema>;

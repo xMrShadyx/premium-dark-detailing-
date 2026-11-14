@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   Design tokens — navy + neon blue, from the MM Detailing mock-up
+   Design tokens — deep teal + silver, from the M&M Garage ad
    Usage: bg-bg, bg-bg-2, bg-surface, text-fg, text-fg-muted,
           border-line, text-accent, bg-accent, font-display, font-sans …
    ------------------------------------------------------------------ */
 /* Dark is the default palette. The light palette and the always-dark
    .theme-dark scope are defined in the base layer below. */
 @theme {
-  --color-bg: #05080e;
-  --color-bg-2: #08101a;
-  --color-surface: #0c1622;
-  --color-surface-hover: #12202f;
-  --color-accent: #2b8cff;
-  --color-accent-hover: #55a4ff;
-  --color-fg: #f4f7fb;
-  --color-fg-muted: #a3b0c2;
-  --color-line: #1b2a3c;
+  --color-bg: #061113;
+  --color-bg-2: #091a1d;
+  --color-surface: #0d2226;
+  --color-surface-hover: #132e33;
+  --color-accent: #1fc7b4;
+  --color-accent-hover: #4fdccb;
+  --color-fg: #f2f7f7;
+  --color-fg-muted: #9fb6b8;
+  --color-line: #1a3439;
   --color-error: #ef6b6b;
   --color-success: #4cc38a;
 
@@ -48,8 +48,8 @@
     --color-bg-2: #edebe6;
     --color-surface: #ffffff;
     --color-surface-hover: #f2f0eb;
-    --color-accent: #0a5fcc; /* darker blue: readable on white for text and buttons */
-    --color-accent-hover: #084ea8;
+    --color-accent: #0b7d71; /* deeper teal: readable on white for text and buttons */
+    --color-accent-hover: #086459;
     --color-fg: #141417;
     --color-fg-muted: #55555c;
     --color-line: #dad7d0;
@@ -60,15 +60,15 @@
 
   :root[data-theme="dark"],
   .theme-dark {
-    --color-bg: #05080e;
-    --color-bg-2: #08101a;
-    --color-surface: #0c1622;
-    --color-surface-hover: #12202f;
-    --color-accent: #2b8cff;
-    --color-accent-hover: #55a4ff;
-    --color-fg: #f4f7fb;
-    --color-fg-muted: #a3b0c2;
-    --color-line: #1b2a3c;
+    --color-bg: #061113;
+    --color-bg-2: #091a1d;
+    --color-surface: #0d2226;
+    --color-surface-hover: #132e33;
+    --color-accent: #1fc7b4;
+    --color-accent-hover: #4fdccb;
+    --color-fg: #f2f7f7;
+    --color-fg-muted: #9fb6b8;
+    --color-line: #1a3439;
     --color-error: #ef6b6b;
     --color-success: #4cc38a;
     color-scheme: dark;
@@ -132,7 +132,7 @@
 }
 
 @layer components {
-  /* Neon-blue glow used on primary buttons, icons and dividers (from the mock-up). */
+  /* Teal glow used on primary buttons, icons and dividers (from the mock-up). */
   .glow-accent {
     box-shadow:
       0 0 0 1px color-mix(in srgb, var(--color-accent) 70%, transparent),

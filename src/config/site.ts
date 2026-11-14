@@ -8,8 +8,8 @@ import type { SiteConfig } from "./schema";
  * instead of showing placeholders.
  */
 export const siteConfig = {
-  businessName: "MM Detailing",
-  logo: "/images/brand/mm-logo-v3.webp",
+  businessName: "M&M Garage",
+  logo: "/images/brand/mm-garage-logo.webp",
   siteUrl: "",
 
   defaultLanguage: "bg",
@@ -25,13 +25,13 @@ export const siteConfig = {
   },
 
   contact: {
-    phone: "",
+    phone: "0888 189 352",
     email: "",
     viber: "",
   },
 
   location: {
-    city: null,
+    city: { bg: "Варна", en: "Varna" },
     address: null,
     mapUrl: "",
   },

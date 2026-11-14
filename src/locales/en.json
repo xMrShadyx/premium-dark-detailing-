@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Car Interior Deep Cleaning and Headlight Restoration",
-    "description": "Professional car interior deep cleaning and headlight restoration. Send an inquiry online or via Viber."
+    "title": "M&M Garage – car interior washing and headlight polishing in Varna",
+    "description": "M&M Garage Car Care, Varna: car and van interior washing, headlight polishing with or without coating, promo package. Book online or call 0888 189 352."
   },
   "a11y": {
     "skipToContent": "Skip to content",
@@ -29,7 +29,7 @@
     "cta": "Book now"
   },
   "hero": {
-    "eyebrow": "Professional car detailing",
+    "eyebrow": "M&M Garage · Car Care · Varna",
     "title": "Bring back the shine.",
     "description": "Headlight polishing and restoration, and deep cleaning of car interiors.",
     "primaryButton": "Book now",
@@ -50,14 +50,22 @@
     "duration": "Duration"
   },
   "pricing": {
-    "eyebrow": "Pricing",
-    "title": "Indicative prices",
+    "eyebrow": "Price list",
+    "title": "Prices and offers",
     "subtitle": "Contact us for an exact quote based on your vehicle.",
     "service": "Service",
     "price": "Price",
     "duration": "Duration",
     "onRequest": "Price on request",
-    "from": "From {{price}}"
+    "from": "From {{price}}",
+    "gift": "Gift",
+    "book": "Book now",
+    "bookPromo": "Get the promo package",
+    "promo": "Promo",
+    "instead": "Instead of {{price}} separately",
+    "includes": "The package includes",
+    "bookNow": "Book a slot:",
+    "online": "Online"
   },
   "duration": {
     "minutes": "{{value}} min",

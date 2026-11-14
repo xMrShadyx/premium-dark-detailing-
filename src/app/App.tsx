@@ -4,6 +4,7 @@ import { HeroSection } from "@/sections/HeroSection";
 import { ServicesSection } from "@/sections/ServicesSection";
 import { ContactSection } from "@/sections/ContactSection";
 import { GallerySection } from "@/sections/GallerySection";
+import { PricingSection } from "@/sections/PricingSection";
 import { BookingDialog } from "@/features/inquiries/BookingDialog";
 import { InquiryIntentProvider } from "@/features/inquiries/InquiryIntentContext";
 
@@ -14,6 +15,7 @@ export function App() {
       <main id="main" tabIndex={-1} className="outline-none">
         <HeroSection />
         <ServicesSection />
+        <PricingSection />
         <GallerySection />
         <ContactSection />
       </main>

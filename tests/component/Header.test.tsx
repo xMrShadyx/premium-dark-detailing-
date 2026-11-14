@@ -11,7 +11,7 @@ describe("Header", () => {
     const hrefs = within(nav)
       .getAllByRole("link")
       .map((a) => a.getAttribute("href"));
-    expect(hrefs).toEqual(["#home", "#services", "#gallery", "#about", "#contact"]);
+    expect(hrefs).toEqual(["#home", "#services", "#pricing", "#gallery", "#about", "#contact"]);
   });
 
   it("renders the logo as a link home, named after the business", () => {

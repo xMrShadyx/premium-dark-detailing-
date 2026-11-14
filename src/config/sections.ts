@@ -7,6 +7,7 @@
 export const SECTION_IDS = {
   home: "home",
   services: "services",
+  pricing: "pricing",
   gallery: "gallery",
   about: "about",
   contact: "contact",
@@ -15,4 +16,4 @@ export const SECTION_IDS = {
 export type SectionId = (typeof SECTION_IDS)[keyof typeof SECTION_IDS];
 
 /** Sections shown in the header / mobile menu / footer, in order. */
-export const navigationSections: SectionId[] = ["home", "services", "gallery", "about", "contact"];
+export const navigationSections: SectionId[] = ["home", "services", "pricing", "gallery", "about", "contact"];

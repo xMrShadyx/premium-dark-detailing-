@@ -102,7 +102,7 @@ export function BeforeAfterSlider({ before, after, beforeLabel, afterLabel, labe
       <span className="pointer-events-none absolute bottom-3 left-3 rounded-lg border border-white/15 bg-black/70 px-3 py-1 text-sm font-semibold text-fg">
         {beforeLabel}
       </span>
-      <span className="pointer-events-none absolute right-3 bottom-3 rounded-lg bg-gradient-to-b from-[#3a9bff] to-[#0b5fd1] px-3 py-1 text-sm font-semibold text-white shadow-[0_0_12px] shadow-accent/70">
+      <span className="pointer-events-none absolute right-3 bottom-3 rounded-lg bg-gradient-to-b from-[#12a092] to-[#086157] px-3 py-1 text-sm font-semibold text-white shadow-[0_0_12px] shadow-accent/70">
         {afterLabel}
       </span>
 

@@ -9,7 +9,7 @@ import type { Service } from "./schema";
  *
  * ⚠️ TO CONFIRM WITH THE BUSINESS before launch:
  *   - `features`: list only operations actually offered (SRS §5.3).
- *   - `price` / `durationMinutes`: left as null — never invent prices.
+ *   - `price`: the lowest price from the price list (src/config/pricing.ts).
  *   - Do not add UV coating, guarantees or durability claims unless confirmed.
  */
 export const services = [
@@ -34,7 +34,7 @@ export const services = [
       { bg: "По-стилен външен вид", en: "A sharper look" },
     ],
     image: "/images/site/service-headlight.webp", // from the design mock-up — replace with a real photo
-    price: null,
+    price: { amount: 20, currency: "EUR", type: "starting_from" },
     durationMinutes: null,
     enabled: true,
     order: 1,
@@ -60,7 +60,7 @@ export const services = [
       { bg: "Подходящо за всички видове интериор", en: "Suitable for every type of interior" },
     ],
     image: "/images/site/service-interior.webp", // from the design mock-up — replace with a real photo
-    price: null,
+    price: { amount: 40, currency: "EUR", type: "starting_from" },
     durationMinutes: null,
     enabled: true,
     order: 2,

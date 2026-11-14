@@ -50,6 +50,7 @@ and during `npm run build`; an invalid value stops the build with a readable mes
 | ----------------------- | ----------------------------------------------------------- |
 | `src/config/site.ts`    | Business name, logo, contact, location, hours, hero image   |
 | `src/config/services.ts`| Services, features, prices, durations, enabled/order        |
+| `src/config/pricing.ts` | Price list from the ad: offers, prices, gifts, promo package |
 | `src/config/sections.ts`| Which sections appear in navigation                         |
 | `src/locales/bg.json` / `en.json` | All interface text                                |
 

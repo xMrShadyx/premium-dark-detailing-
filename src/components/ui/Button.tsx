@@ -12,7 +12,7 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-gradient-to-b from-[#3a9bff] to-[#0b5fd1] text-white glow-accent hover:from-[#55a9ff] hover:to-[#1a6be0]",
+    "bg-gradient-to-b from-[#12a092] to-[#086157] text-white glow-accent hover:from-[#18b2a2] hover:to-[#0a6f64]",
   secondary: "border border-line bg-surface/60 text-fg hover:border-accent/60 hover:bg-accent/10",
   /** White outline from the site mock-up (hero "Виж резултати", "Изпрати имейл"). */
   outline: "border border-fg/80 text-fg hover:border-accent hover:bg-accent/10",

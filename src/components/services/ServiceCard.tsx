@@ -4,6 +4,7 @@ import type { Service } from "@/config/schema";
 import { useLocale } from "@/app/providers/LocaleProvider";
 import { useInquiryIntent } from "@/features/inquiries/InquiryIntentContext";
 import { assetUrl, localize } from "@/lib/locale";
+import { formatPrice } from "@/lib/format";
 import { ServiceIcon } from "./ServiceIcon";
 
 type Props = { service: Service };
@@ -42,6 +43,11 @@ export function ServiceCard({ service }: Props) {
             <ServiceIcon id={service.id} size={44} className="shrink-0 text-accent text-glow" />
             {title}
           </h3>
+          {service.price && (
+            <a href="#pricing" className="mt-2 inline-block text-sm font-bold text-accent hover:underline">
+              {formatPrice(service.price, lang, t)}
+            </a>
+          )}
           {service.features.length > 0 && (
             <ul className="mt-5 grid gap-2">
               {service.features.map((feature) => (
